@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+
+:root {
+  --primary: #00145d;
+  --secondary: #5ca8ff;
+  --accent: #00c4ff;
+  --foreground: #050315;
+  --background: #fbfbfe;
+
+  --muted: #f1f1f5;
+  --muted-foreground: #6b6b8b;
+
+  --border: #d7d7e5;
+  --input: #ffffff;
+  --ring: #5ca8ff;
+
+  --card: #ffffff;
+  --card-foreground: #524f64;
+
+  --success: #16a34a;
+  --warning: #facc15;
+  --danger: #dc2626;
+  --info: #0081a2;
+
+  --primary-logo: #00145d;
+  --secondary-logo: #5ca8ff;
+}
+
+@theme {
+  /* Colors -  */
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  --font-inter: var(--font-inter);
+  --font-poppins: var(--font-poppins);
+  --font-montserrat: var(--font-montserrat);
+
+  /* Shadows -  */
+  --shadow-glow-sm: 0px 0px 1.875rem 0px var(--tw-shadow-color); /* blur - 30px */
+  --shadow-glow-lg: 0px 0px 3.75rem 0px var(--tw-shadow-color); /* blur - 60px */
+  --shadow-glow-xl: 0px 0px 7.5rem 0px var(--tw-shadow-color); /* blur - 120px */
+
+  /* Breakpoints -  */
+  --breakpoint-xxs: 23.4375rem; /* 375px */
+  --breakpoint-xs: 28.75rem; /* 460px */
+  --breakpoint-xsm: 35rem; /* 560px */
+}
+
+[data-theme='dark'] {
+  --primary: #00145d;
+  --secondary: #124f96;
+  --accent: #0081a2;
+  --foreground: #eae9fc;
+  --background: #010104;
+
+  --muted: #1c1c28;
+  --muted-foreground: #9494b5;
+
+  --muted: #1c1c28;
+  --muted-foreground: #9494b5;
+
+  --border: #2e2e3f;
+  --input: #0b0b12;
+  --ring: #124f96;
+
+  --card: #0f0f17;
+  --card-foreground: #eae9fc;
+
+  --success: #22c55e;
+  --warning: #eab308;
+  --danger: #ef4444;
+  --info: #00a7d2;
+
+  --primary-logo: #001c81;
+  --secondary-logo: #c6f2ff;
+}
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
