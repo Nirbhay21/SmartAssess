@@ -1,0 +1,17 @@
+echo ""
+echo "Husky: Starting Pre-Commit Checks for staged files..."
+echo "----------------------------------------"
+echo "Husky: Running TypeScript checks..."
+echo ""
+
+npm run type-check
+
+echo "Husky: Running linting and formatting checks..."
+
+npm run lint:staged
+
+echo ""
+echo "Husky: All checks completed successfully"
+echo "----------------------------------------"
+echo "Husky: Commit ready, Proceeding with commit..."
+echo ""
