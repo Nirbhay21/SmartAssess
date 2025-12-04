@@ -17,7 +17,7 @@ const HamburgerMenu = () => {
       {/* Menu toggle button */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-11 h-9.5 flex flex-col justify-between cursor-pointer hover:bg-muted p-2 transition-[background-color] duration-200 rounded-md lg:hidden border border-border active:bg-muted-foreground/20"
+        className="hover:bg-muted border-border active:bg-muted-foreground/20 flex h-9.5 w-11 cursor-pointer flex-col justify-between rounded-md border p-2 transition-[background-color] duration-200 lg:hidden"
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
         aria-controls="mobile-menu"
@@ -26,19 +26,19 @@ const HamburgerMenu = () => {
           aria-hidden="true"
           animate={open ? { rotate: 45, y: 9 } : { rotate: 0, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="h-0.5 w-full bg-foreground rounded-md"
+          className="bg-foreground h-0.5 w-full rounded-md"
         />
         <motion.span
           aria-hidden="true"
           animate={open ? { opacity: 0 } : { opacity: 1 }}
           transition={{ duration: 0.14 }}
-          className="h-0.5 w-full bg-foreground rounded-md"
+          className="bg-foreground h-0.5 w-full rounded-md"
         />
         <motion.span
           aria-hidden="true"
           animate={open ? { rotate: -45, y: -9 } : { rotate: 0, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="h-0.5 w-full bg-foreground rounded-md"
+          className="bg-foreground h-0.5 w-full rounded-md"
         />
       </button>
 
@@ -54,20 +54,20 @@ const HamburgerMenu = () => {
             animate={{ clipPath: 'inset(0 0 0 0)' }}
             exit={{ clipPath: 'inset(0 0 100% 0)' }}
             transition={{ duration: 0.2 }}
-            className="fixed z-5 inset-0 top-18 px-4 py-6 border-t border-border bg-background"
+            className="border-border bg-background fixed inset-0 top-18 z-5 border-t px-4 py-6"
           >
             <nav>
-              <ul className="flex flex-col space-y-2 font-poppins text-lg">
+              <ul className="font-poppins flex flex-col space-y-2 text-lg">
                 {navLinks.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="py-1 px-4 group hover:bg-secondary/25 transition-[background-color] rounded-md flex w-full justify-between items-center"
+                      className="group hover:bg-secondary/25 flex w-full items-center justify-between rounded-md px-4 py-1 transition-[background-color]"
                     >
                       <span>{link.name}</span>
                       <MoveRight
-                        className="opacity-0 group-hover:opacity-100 duration-200 transition-opacity"
+                        className="opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                         aria-hidden="true"
                       />
                     </Link>

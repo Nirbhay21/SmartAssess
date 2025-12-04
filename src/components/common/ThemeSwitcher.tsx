@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 
 const ThemeIcon = dynamic(() => import('./ThemeIcon'), {
   ssr: false,
-  loading: () => <div className="w-9 h-9 rounded-full bg-secondary/45 animate-pulse" />,
+  loading: () => <div className="bg-secondary/45 h-9 w-9 animate-pulse rounded-full" />,
 });
 
 type Theme = 'light' | 'dark' | 'system';
@@ -81,7 +81,7 @@ const ThemeSwitcher = () => {
           <ThemeIcon
             icon={currentTheme.icon}
             size={24}
-            className="bg-secondary/45 box-content p-1.5 rounded-full"
+            className="bg-secondary/45 box-content rounded-full p-1.5"
           />
         </motion.div>
       </button>
@@ -97,14 +97,14 @@ const ThemeSwitcher = () => {
             animate={{ y: 0, scale: 1, opacity: 1 }}
             exit={{ y: -10, scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.14, ease: 'easeOut' }}
-            className="absolute top-10.5 px-2 py-3 z-10 rounded-xl bg-card shadow-lg mt-3 before:size-4 before:bg-card before:block before:rotate-45 before:absolute before:top-0 before:-translate-y-1/2 before:left-4.5 -left-2 before:border after:-translate-y-1/2 after:left-3.5 after:h-3 after:w-6 after:block after:absolute after:top-1.5 after:bg-card border before:border-border border-border"
+            className="bg-card before:bg-card after:bg-card before:border-border border-border absolute top-10.5 -left-2 z-10 mt-3 rounded-xl border px-2 py-3 shadow-lg before:absolute before:top-0 before:left-4.5 before:block before:size-4 before:-translate-y-1/2 before:rotate-45 before:border after:absolute after:top-1.5 after:left-3.5 after:block after:h-3 after:w-6 after:-translate-y-1/2"
           >
             {themes.map((theme) => (
               <button
                 key={theme.name}
                 role="menuitem"
                 aria-label={`Switch to ${theme.name} theme`}
-                className={`flex items-center pl-2 w-35 py-1.5 justify-between hover:bg-accent/20 cursor-pointer rounded-md text-card-foreground ${theme.name === currentTheme.name ? 'bg-accent/20' : ''}`}
+                className={`hover:bg-accent/20 text-card-foreground flex w-35 cursor-pointer items-center justify-between rounded-md py-1.5 pl-2 ${theme.name === currentTheme.name ? 'bg-accent/20' : ''}`}
                 onClick={() => selectThemeAndCloseMenu(theme.name)}
               >
                 <div className="flex space-x-2">

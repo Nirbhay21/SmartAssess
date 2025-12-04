@@ -36,23 +36,23 @@ const features: Features[] = [
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="py-12 sm:py-16 2xl:py-24 px-4">
-      <div className="max-w-7xl mx-auto">
-        <header className="text-center mb-6 sm:mb-8 lg:mb-10">
-          <h2 className="font-inter text-4xl md:text-5xl leading-14">
-            <span className="block text-primary font-semibold dark:text-foreground">
+    <section id="features" className="px-4 py-12 sm:py-16 2xl:py-24">
+      <div className="mx-auto max-w-7xl">
+        <header className="mb-6 text-center sm:mb-8 lg:mb-10">
+          <h2 className="font-inter text-4xl leading-14 md:text-5xl">
+            <span className="text-primary dark:text-foreground block font-semibold">
               Everything You Need to
             </span>
-            <span className="bg-linear-to-r from-secondary to-accent/80 dark:to-accent bg-clip-text text-transparent font-semibold">
+            <span className="from-secondary to-accent/80 dark:to-accent bg-linear-to-r bg-clip-text font-semibold text-transparent">
               Hire Smarter
             </span>
           </h2>
-          <p className="text-foreground/80 font-semibold text-[1.25rem] max-w-165 mx-auto mt-6 font-inter">
+          <p className="text-foreground/80 font-inter mx-auto mt-6 max-w-165 text-[1.25rem] font-semibold">
             Powerful features designed to streamline your recruitment process from start to finish.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {features.map((feature, index) => (
             <FeatureCard
               key={index}
