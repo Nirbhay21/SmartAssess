@@ -1,11 +1,11 @@
-import { LucideIcon, LucideProps } from 'lucide-react'
+import { LucideIcon, LucideProps } from 'lucide-react';
 
 type Props = {
-  icon: LucideIcon
-} & LucideProps
+  icon: LucideIcon;
+} & LucideProps;
 
 const ThemeIcon = ({ icon: Icon, ...props }: Props) => {
-  return <Icon {...props} />
-}
+  return <Icon {...props} />;
+};
 
-export default ThemeIcon
+export default ThemeIcon;

@@ -1,7 +1,7 @@
 export type NavLink = {
-  name: string
-  href: string
-}
+  name: string;
+  href: string;
+};
 
 export const navLinks: NavLink[] = [
   { name: 'Home', href: '#home' },
@@ -9,4 +9,4 @@ export const navLinks: NavLink[] = [
   { name: 'About', href: '#about' },
   { name: 'How it Works', href: '#how-it-works' },
   { name: 'FAQ', href: '#faq' },
-]
+];
