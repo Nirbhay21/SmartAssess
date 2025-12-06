@@ -1,6 +1,6 @@
-import FeaturesSection from '@/components/landing/features/FeaturesSection';
-import HeroSection from '@/components/landing/hero/HeroSection';
-import HowItWorksSection from '@/components/landing/howItWorks/HowItWorksSection';
+import FeaturesSection from './_components/features/FeaturesSection';
+import HeroSection from './_components/hero/HeroSection';
+import HowItWorksSection from './_components/how-it-works/HowItWorksSection';
 
 export default function Home() {
   return (
