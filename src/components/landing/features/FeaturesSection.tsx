@@ -36,10 +36,10 @@ const features: Features[] = [
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="px-4 py-12 sm:py-16 2xl:py-24">
+    <section id="features" className="px-4 py-12 sm:py-16 2xl:pt-20">
       <div className="mx-auto max-w-7xl">
         <header className="mb-6 text-center sm:mb-8 lg:mb-10">
-          <h2 className="font-inter text-4xl leading-14 md:text-5xl">
+          <h2 className="font-inter text-4xl leading-tight md:text-5xl md:leading-14">
             <span className="text-primary dark:text-foreground block font-semibold">
               Everything You Need to
             </span>

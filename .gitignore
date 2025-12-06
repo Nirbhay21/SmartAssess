@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+PROJECT_STRUCTURE_PROPOSAL.md
+projectInfo.md

@@ -3,7 +3,7 @@
 :root {
   --primary: #00145d;
   --secondary: #5ca8ff;
-  --accent: #00c4ff;
+  --accent: #00ccff;
   --foreground: #050315;
   --background: #fbfbfe;
 
@@ -54,6 +54,7 @@
   --font-montserrat: var(--font-montserrat);
 
   /* Shadows -  */
+  --shadow-glow-xs: 0px 0px 0.625rem 0px var(--tw-shadow-color); /* blur - 10px */
   --shadow-glow-sm: 0px 0px 1.875rem 0px var(--tw-shadow-color); /* blur - 30px */
   --shadow-glow-lg: 0px 0px 3.75rem 0px var(--tw-shadow-color); /* blur - 60px */
   --shadow-glow-xl: 0px 0px 7.5rem 0px var(--tw-shadow-color); /* blur - 120px */
@@ -67,7 +68,7 @@
 [data-theme='dark'] {
   --primary: #00145d;
   --secondary: #124f96;
-  --accent: #0081a2;
+  --accent: #00ccff;
   --foreground: #eae9fc;
   --background: #010104;
 
