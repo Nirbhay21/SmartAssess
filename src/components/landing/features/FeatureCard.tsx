@@ -17,7 +17,7 @@ const FeatureCard = ({
 }: FeatureCardProps) => {
   return (
     <article
-      className={`from-primary/35 via-accent/35 to-secondary/35 dark:from-primary/35 dark:via-accent/35 dark:to-secondary/35 hover:from-primary/60 hover:via-accent/60 hover:to-secondary/60 hover:dark:from-primary/75 hover:dark:via-accent/75 hover:dark:to-secondary/75 group rounded-lg bg-linear-to-tl p-0.5 shadow-xl ${
+      className={`from-primary/35 via-accent/35 to-secondary/35 dark:from-primary/60 dark:via-accent/35 dark:to-secondary/60 hover:from-primary/60 hover:via-accent/60 hover:to-secondary/60 hover:dark:from-primary hover:dark:via-accent/75 hover:dark:to-secondary group rounded-lg bg-linear-to-tl p-0.5 shadow-xl ${
         colspan === 2 ? 'lg:col-span-2' : 'col-span-1'
       }`}
     >
