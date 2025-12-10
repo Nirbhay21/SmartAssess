@@ -88,7 +88,7 @@ const WorkflowContent = ({ activeUserType }: WorkflowContentProps) => {
         initial="hidden"
         animate="visible"
         variants={parentVariant}
-        className="relative mx-auto max-w-5xl"
+        className="relative mx-auto max-w-5xl overflow-x-hidden"
       >
         {workflowSteps.map((step, index) => (
           <motion.div
