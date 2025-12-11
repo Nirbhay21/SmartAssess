@@ -54,7 +54,7 @@ const HamburgerMenu = () => {
             animate={{ clipPath: 'inset(0 0 0 0)' }}
             exit={{ clipPath: 'inset(0 0 100% 0)' }}
             transition={{ duration: 0.2 }}
-            className="border-border bg-background fixed inset-0 top-18 z-5 border-t px-4 py-6"
+            className="border-border bg-background fixed top-18 right-0 bottom-0 left-0 z-5 h-[calc(100dvh-4.5rem)] border-t px-4 py-6"
           >
             <nav>
               <ul className="font-poppins flex flex-col space-y-2 text-lg">

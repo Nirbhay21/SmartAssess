@@ -87,9 +87,7 @@ export default function RootLayout({
     >
       <body className="bg-background dark:bg-dark-background">
         <Providers>
-          <header>
-            <Navbar />
-          </header>
+          <Navbar />
           <main>{children}</main>
         </Providers>
       </body>
