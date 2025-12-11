@@ -3,7 +3,10 @@ import CandidateTestMockup from './CandidateTestMockup';
 
 const HeroSection = () => {
   return (
-    <section className="from-primary/8 via-accent/5 to-secondary/8 dark:from-primary/40 dark:via-accent/10 dark:to-secondary/40 bg-linear-to-br px-4 py-12 sm:py-16 2xl:py-24">
+    <section
+      id="hero"
+      className="from-primary/8 via-accent/5 to-secondary/8 dark:from-primary/40 dark:via-accent/10 dark:to-secondary/40 bg-linear-to-br px-4 py-12 sm:py-16 2xl:py-24"
+    >
       <div className="xs:space-y-20 mx-auto flex max-w-7xl flex-col space-y-18 lg:flex-row lg:space-y-0">
         {/* Left text content */}
         <div className="flex flex-col space-y-6 text-center lg:w-1/2 lg:items-start lg:text-left">
