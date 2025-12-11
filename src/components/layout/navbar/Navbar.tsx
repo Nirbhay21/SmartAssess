@@ -1,10 +1,18 @@
+'use client';
+
 import Link from 'next/link';
 import Logo from '../../common/Logo';
 import ThemeSwitcher from '../../common/ThemeSwitcher';
 import HamburgerMenu from './HamburgerMenu';
 import { navLinks } from '@/config/nav-links';
+import { useScrollSpy } from '@/hooks/use-scroll-spy';
 
 const Navbar = () => {
+  const activeSection = useScrollSpy(
+    navLinks.map(({ id }) => id),
+    { offsetTop: 72 },
+  );
+
   return (
     <header className="border-border sticky top-0 z-50 border-b">
       <nav className="bg-white/75 px-4 backdrop-blur-lg dark:bg-black/75">
@@ -20,7 +28,9 @@ const Navbar = () => {
               <li key={link.name} className="font-medium whitespace-nowrap">
                 <Link
                   href={link.href}
-                  className="hover:bg-primary/10 rounded-md px-3 py-1.5 transition-[background-color] duration-200"
+                  className={`rounded-md px-3 py-1.5 transition-[background-color] duration-200 ${
+                    activeSection === link.id ? 'bg-primary/10 font-semibold' : 'hover:bg-primary/5'
+                  }`}
                 >
                   {link.name}
                 </Link>

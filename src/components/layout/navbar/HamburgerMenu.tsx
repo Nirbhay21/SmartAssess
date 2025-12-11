@@ -6,9 +6,14 @@ import { navLinks } from '@/config/nav-links';
 import { MoveRight } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useScrollSpy } from '@/hooks/use-scroll-spy';
 
 const HamburgerMenu = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const activeSection = useScrollSpy(
+    navLinks.map(({ id }) => id),
+    { offsetTop: 72 },
+  );
 
   useScrollLock(open);
 
@@ -58,21 +63,32 @@ const HamburgerMenu = () => {
           >
             <nav>
               <ul className="font-poppins flex flex-col space-y-2 text-lg">
-                {navLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      onClick={() => setOpen(false)}
-                      className="group hover:bg-secondary/25 flex w-full items-center justify-between rounded-md px-4 py-1 transition-[background-color]"
-                    >
-                      <span>{link.name}</span>
-                      <MoveRight
-                        className="opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                        aria-hidden="true"
-                      />
-                    </Link>
-                  </li>
-                ))}
+                {navLinks.map((link) => {
+                  const isActive = activeSection === link.id;
+                  return (
+                    <li key={link.name}>
+                      <Link
+                        href={link.href}
+                        onClick={() => setOpen(false)}
+                        aria-current={isActive ? 'page' : undefined}
+                        className={`group flex w-full items-center justify-between rounded-md px-4 py-2 transition-all duration-200 ${
+                          isActive
+                            ? 'bg-secondary/25 text-primary font-medium'
+                            : 'text-muted-foreground hover:bg-secondary/10 hover:text-foreground'
+                        }`}
+                      >
+                        <span>{link.name}</span>
+                        <MoveRight
+                          size={18}
+                          className={`transition-opacity duration-200 ${
+                            isActive ? 'opacity-100' : 'opacity-0'
+                          }`}
+                          aria-hidden="true"
+                        />
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </motion.div>
