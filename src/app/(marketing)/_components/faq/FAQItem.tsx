@@ -21,7 +21,7 @@ const FAQItem = ({ id, question, answer }: FAQItemProps) => {
   return (
     <div className="dark:bg-card border-border/45 relative rounded-lg border bg-white shadow-sm dark:border">
       <button
-        className="group focus-visible:ring-primary flex w-full cursor-pointer justify-between p-5 focus-visible:ring-1"
+        className="group focus-visible:ring-primary flex w-full cursor-pointer justify-between p-5 text-left focus-visible:ring-1"
         aria-expanded={isOpen}
         aria-controls={`faq-content-${id}`}
         onClick={toggleFaq}
@@ -45,7 +45,7 @@ const FAQItem = ({ id, question, answer }: FAQItemProps) => {
             transition={{ duration: 0.3 }}
             className="box-content overflow-hidden"
           >
-            <p className="px-5 pb-5">{answer}</p>
+            <p className="px-5 pb-5 text-left">{answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
