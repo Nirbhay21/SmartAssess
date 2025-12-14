@@ -104,7 +104,11 @@ const ThemeSwitcher = () => {
                 key={theme.name}
                 role="menuitem"
                 aria-label={`Switch to ${theme.name} theme`}
-                className={`hover:bg-accent/20 text-card-foreground flex w-35 cursor-pointer items-center justify-between rounded-md py-1.5 pl-2 ${theme.name === currentTheme.name ? 'bg-accent/20' : ''}`}
+                className={`text-card-foreground flex w-35 cursor-pointer items-center justify-between rounded-md py-1.5 pl-2 ${
+                  theme.name === currentTheme.name
+                    ? 'bg-accent/20'
+                    : 'hover:bg-black/5 dark:hover:bg-white/5'
+                }`}
                 onClick={() => selectThemeAndCloseMenu(theme.name)}
               >
                 <div className="flex space-x-2">
