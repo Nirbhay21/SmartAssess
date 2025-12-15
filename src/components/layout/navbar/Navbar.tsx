@@ -6,6 +6,7 @@ import ThemeSwitcher from '../../common/ThemeSwitcher';
 import HamburgerMenu from './HamburgerMenu';
 import { navLinks } from '@/config/nav-links';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
+import * as motion from 'motion/react-client';
 
 const Navbar = () => {
   const activeSection = useScrollSpy(
@@ -24,18 +25,27 @@ const Navbar = () => {
             </Link>
           </div>
           <ul className="font-poppins hidden flex-1 justify-center space-x-3 lg:flex">
-            {navLinks.map((link) => (
-              <li key={link.name} className="font-medium whitespace-nowrap">
-                <Link
-                  href={link.href}
-                  className={`rounded-md px-3 py-1.5 transition-[background-color] duration-200 ${
-                    activeSection === link.id ? 'bg-primary/10 font-semibold' : 'hover:bg-primary/5'
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+
+              return (
+                <li key={link.name} className="font-medium whitespace-nowrap">
+                  <Link
+                    href={link.href}
+                    className={`relative rounded-md px-3 py-1.5 transition-[background-color] duration-200 hover:bg-black/5 dark:hover:bg-white/10`}
+                  >
+                    <span className={`${isActive ? 'font-semibold' : ''}`}>{link.name}</span>
+                    {isActive && (
+                      <motion.div
+                        layoutId="nav-active-indicator"
+                        transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                        className={`bg-secondary/30 dark:bg-secondary/50 absolute top-0 -z-1 h-full w-full rounded-md`}
+                      ></motion.div>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
           <div className="flex flex-1 items-center justify-end">
             <div className="mr-4 flex lg:mr-0">
