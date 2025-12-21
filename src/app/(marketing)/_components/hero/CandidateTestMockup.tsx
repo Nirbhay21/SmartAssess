@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn';
 import { Check, Stars } from 'lucide-react';
 
 const CandidateTestMockup = () => {
@@ -21,21 +22,27 @@ const CandidateTestMockup = () => {
             {Array.from({ length: 5 }).map((_, index) => (
               <div
                 key={index}
-                className={`xs:h-8.5 xsm:h-9.5 xs:rounded-lg xxs:px-2.5 xs:px-3.5 mb-2.5 flex h-7 items-center space-x-1.5 rounded-sm px-2 ${
+                className={cn(
+                  'mb-2.5 flex h-7 items-center space-x-1.5 rounded-sm px-2',
+                  'xxs:px-2.5 xs:px-3.5',
+                  'xs:h-8.5 xsm:h-9.5',
+                  'xs:rounded-lg',
                   index === 0
                     ? 'border-secondary/40 bg-secondary/10 border'
-                    : 'bg-black/4 dark:bg-white/5'
-                }`}
+                    : 'bg-black/4 dark:bg-white/5',
+                )}
               >
                 <div
-                  className={`size-2.5 shrink-0 rounded-full ${
-                    index === 0 ? 'bg-secondary/70' : 'bg-black/6 dark:bg-white/10'
-                  }`}
+                  className={cn(
+                    'size-2.5 shrink-0 rounded-full',
+                    index === 0 ? 'bg-secondary/70' : 'bg-black/6 dark:bg-white/10',
+                  )}
                 ></div>
                 <div
-                  className={`h-2 w-[75%] rounded-xs ${
-                    index === 0 ? 'bg-secondary/50' : 'bg-black/6 dark:bg-white/10'
-                  }`}
+                  className={cn(
+                    'h-2 w-[75%] rounded-xs',
+                    index === 0 ? 'bg-secondary/50' : 'bg-black/6 dark:bg-white/10',
+                  )}
                 ></div>
               </div>
             ))}

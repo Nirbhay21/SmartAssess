@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import Navbar from '@/components/layout/navbar/Navbar';
 import { Inter, Poppins, Montserrat } from 'next/font/google';
 import Providers from '@/providers/providers';
+import { cn } from '@/lib/cn';
 
 export const metadata: Metadata = {
   title: {
@@ -82,7 +83,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${poppins.variable} ${montserrat.variable}`}
+      className={cn(inter.variable, poppins.variable, montserrat.variable)}
       suppressHydrationWarning={true}
     >
       <body className="bg-background dark:bg-dark-background">

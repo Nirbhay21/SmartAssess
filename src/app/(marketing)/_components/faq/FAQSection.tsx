@@ -78,7 +78,7 @@ const FAQSection = () => {
         {/* Still have questions? */}
         <div className="border-border mt-12 rounded-md border bg-black/2.5 p-8 shadow-md dark:bg-white/3">
           <h5 className="font-inter mb-4 text-2xl font-semibold">Still have questions?</h5>
-          <p className="text-foreground/70 font-inter mx-auto mb-6 max-w-[520px] text-lg font-medium">
+          <p className="text-foreground/70 font-inter mx-auto mb-6 max-w-130 text-lg font-medium">
             Can&apos;t find the answer you&apos;re looking for? Chat with our AI assistant for
             instant help.
           </p>

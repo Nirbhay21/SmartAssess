@@ -7,6 +7,7 @@ import { MoveRight } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
+import { cn } from '@/lib/cn';
 
 const HamburgerMenu = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -71,18 +72,20 @@ const HamburgerMenu = () => {
                         href={link.href}
                         onClick={() => setOpen(false)}
                         aria-current={isActive ? 'page' : undefined}
-                        className={`group flex w-full items-center justify-between rounded-md px-4 py-2 transition-all duration-200 ${
+                        className={cn(
+                          'group flex w-full items-center justify-between rounded-md px-4 py-2 transition-all duration-200',
                           isActive
                             ? 'bg-secondary/25 text-primary font-medium'
-                            : 'text-muted-foreground hover:bg-secondary/10 hover:text-foreground'
-                        }`}
+                            : 'text-muted-foreground hover:bg-secondary/10 hover:text-foreground',
+                        )}
                       >
                         <span>{link.name}</span>
                         <MoveRight
                           size={18}
-                          className={`transition-opacity duration-200 ${
-                            isActive ? 'opacity-100' : 'opacity-0'
-                          }`}
+                          className={cn(
+                            'transition-opacity duration-200',
+                            isActive ? 'opacity-100' : 'opacity-0',
+                          )}
                           aria-hidden="true"
                         />
                       </Link>

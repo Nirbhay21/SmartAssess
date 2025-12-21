@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/lib/cn';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -21,9 +22,10 @@ const LikeDislike = () => {
         aria-label="Like"
         aria-pressed={feedback === 'like'}
         onClick={() => handleFeedback('like')}
-        className={`focus-visible:ring-primary cursor-pointer rounded-full p-2 transition-colors focus-visible:ring-2 hover:dark:bg-white/10 ${
-          feedback === 'like' ? 'text-secondary' : 'text-foreground/70'
-        }`}
+        className={cn(
+          'focus-visible:ring-primary cursor-pointer rounded-full p-2 transition-colors focus-visible:ring-2 hover:dark:bg-white/10',
+          feedback === 'like' ? 'text-secondary' : 'text-foreground/70',
+        )}
       >
         <ThumbsUp />
       </button>
@@ -33,9 +35,10 @@ const LikeDislike = () => {
         aria-label="Dislike"
         aria-pressed={feedback === 'dislike'}
         onClick={() => handleFeedback('dislike')}
-        className={`focus-visible:ring-primary cursor-pointer rounded-full p-2 transition-colors focus-visible:ring-2 hover:dark:bg-white/10 ${
-          feedback === 'dislike' ? 'text-secondary' : 'text-foreground/70'
-        }`}
+        className={cn(
+          'focus-visible:ring-primary cursor-pointer rounded-full p-2 transition-colors focus-visible:ring-2 hover:dark:bg-white/10',
+          feedback === 'dislike' ? 'text-secondary' : 'text-foreground/70',
+        )}
       >
         <ThumbsDown />
       </button>

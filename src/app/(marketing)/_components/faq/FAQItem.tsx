@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/lib/cn';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
@@ -28,11 +29,12 @@ const FAQItem = ({ id, question, answer }: FAQItemProps) => {
       >
         <span>{question}</span>
         <ChevronDown
-          className={`border-border rounded-full border p-0.5 transition-all duration-300 ${
+          className={cn(
+            'border-border rounded-full border p-0.5 transition-all duration-300',
             isOpen
               ? 'bg-primary rotate-180 text-white'
-              : 'group-hover:bg-primary/10 dark:group-hover:bg-secondary/35 rotate-0 bg-transparent text-black dark:text-white'
-          }`}
+              : 'group-hover:bg-primary/10 dark:group-hover:bg-secondary/35 rotate-0 bg-transparent text-black dark:text-white',
+          )}
         />
       </button>
       <AnimatePresence>

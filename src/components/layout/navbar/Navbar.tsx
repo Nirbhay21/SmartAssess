@@ -7,6 +7,7 @@ import HamburgerMenu from './HamburgerMenu';
 import { navLinks } from '@/config/nav-links';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
 import * as motion from 'motion/react-client';
+import { cn } from '@/lib/cn';
 
 const Navbar = () => {
   const activeSection = useScrollSpy(
@@ -32,14 +33,14 @@ const Navbar = () => {
                 <li key={link.name} className="font-medium whitespace-nowrap">
                   <Link
                     href={link.href}
-                    className={`relative rounded-md px-3 py-1.5 transition-[background-color] duration-200 hover:bg-black/5 dark:hover:bg-white/10`}
+                    className="relative rounded-md px-3 py-1.5 transition-[background-color] duration-200 hover:bg-black/5 dark:hover:bg-white/10"
                   >
-                    <span className={`${isActive ? 'font-semibold' : ''}`}>{link.name}</span>
+                    <span className={cn(isActive && 'font-semibold')}>{link.name}</span>
                     {isActive && (
                       <motion.div
                         layoutId="nav-active-indicator"
                         transition={{ type: 'spring', stiffness: 450, damping: 32 }}
-                        className={`bg-secondary/30 dark:bg-secondary/50 absolute top-0 -z-1 h-full w-full rounded-md`}
+                        className="bg-secondary/30 dark:bg-secondary/50 absolute top-0 -z-1 h-full w-full rounded-md"
                       ></motion.div>
                     )}
                   </Link>

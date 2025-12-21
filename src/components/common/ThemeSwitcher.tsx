@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes';
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { cn } from '@/lib/cn';
 
 const ThemeIcon = dynamic(() => import('./ThemeIcon'), {
   ssr: false,
@@ -104,11 +105,12 @@ const ThemeSwitcher = () => {
                 key={theme.name}
                 role="menuitem"
                 aria-label={`Switch to ${theme.name} theme`}
-                className={`text-card-foreground flex w-35 cursor-pointer items-center justify-between rounded-md py-1.5 pl-2 ${
+                className={cn(
+                  'text-card-foreground flex w-35 cursor-pointer items-center justify-between rounded-md py-1.5 pl-2',
                   theme.name === currentTheme.name
                     ? 'bg-accent/20'
-                    : 'hover:bg-black/5 dark:hover:bg-white/5'
-                }`}
+                    : 'hover:bg-black/5 dark:hover:bg-white/5',
+                )}
                 onClick={() => selectThemeAndCloseMenu(theme.name)}
               >
                 <div className="flex space-x-2">
