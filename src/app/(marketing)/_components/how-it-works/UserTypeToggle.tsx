@@ -1,3 +1,4 @@
+import { cn } from '@/lib/cn';
 import { motion } from 'motion/react';
 
 interface UserTypeToggleButtonProps {
@@ -27,11 +28,13 @@ const UserTypeToggle = ({ activeUserType, onChange }: UserTypeToggleButtonProps)
           key={type}
           role="tab"
           aria-selected={activeUserType === type}
-          className={`xs:px-8 xs:py-3 xxs:py-2.5 xs:rounded-lg rounded-md px-4 py-2 font-medium capitalize ${
+          className={cn(
+            'rounded-md px-4 py-2 font-medium capitalize',
+            'xxs:py-2.5 xs:px-8 xs:py-3 xs:rounded-lg',
             activeUserType === type
               ? 'text-white'
-              : 'dark:text-foreground/60 cursor-pointer text-black transition-[color] duration-200'
-          }`}
+              : 'dark:text-foreground/60 cursor-pointer text-black transition-[color] duration-200',
+          )}
           onClick={() => onChange(type)}
         >
           <span>For {type}</span>

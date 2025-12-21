@@ -6,6 +6,7 @@ import { ChevronRight } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
 import FeedbackLikeDislike from './FeedbackLikeDislike';
+import { cn } from '@/lib/cn';
 
 interface SplitFaqLayoutProps {
   faqs: FAQItem[];
@@ -34,9 +35,10 @@ const SplitFaqLayout = ({ faqs }: SplitFaqLayoutProps) => {
                 onClick={() => setCurrentQuestion(faq.id)}
               >
                 <span
-                  className={`font-poppins line-clamp-1 text-lg ${
-                    currentQuestion === faq.id ? 'font-medium' : 'text-foreground/70 font-normal'
-                  }`}
+                  className={cn(
+                    'font-poppins line-clamp-1 text-lg',
+                    currentQuestion === faq.id ? 'font-medium' : 'text-foreground/70 font-normal',
+                  )}
                 >
                   {faq.question}
                 </span>
@@ -55,11 +57,12 @@ const SplitFaqLayout = ({ faqs }: SplitFaqLayoutProps) => {
               </button>
 
               <div
-                className={`absolute top-0 h-full w-0.5 ${
+                className={cn(
+                  'absolute top-0 h-full w-0.5',
                   currentQuestion === faq.id
                     ? 'bg-primary dark:bg-accent'
-                    : 'bg-primary/10 group-hover:bg-primary/20 dark:bg-accent/20 dark:group-hover:bg-accent/40'
-                }`}
+                    : 'bg-primary/10 group-hover:bg-primary/20 dark:bg-accent/20 dark:group-hover:bg-accent/40',
+                )}
               ></div>
             </li>
           ))}
