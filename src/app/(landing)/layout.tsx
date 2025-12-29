@@ -1,9 +1,5 @@
-import '../globals.css';
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import Navbar from '@/components/layout/navbar/Navbar';
-import { Inter, Poppins, Montserrat } from 'next/font/google';
-import Providers from '@/providers/providers';
-import { cn } from '@/lib/cn';
 
 export const metadata: Metadata = {
   title: {
@@ -43,55 +39,15 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false },
 };
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  minimumScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  viewportFit: 'cover',
-  interactiveWidget: 'resizes-content',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#0A0A0A' },
-    { media: '(prefers-color-scheme: dark)', color: '#FFFFFF' },
-  ],
-};
-
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-inter',
-});
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-poppins',
-});
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-  variable: '--font-montserrat',
-});
-
-export default function RootLayout({
+export default function LandingLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn(inter.variable, poppins.variable, montserrat.variable)}
-      suppressHydrationWarning={true}
-    >
-      <body className="bg-background dark:bg-dark-background">
-        <Providers>
-          <Navbar />
-          <main>{children}</main>
-        </Providers>
-      </body>
-    </html>
+    <>
+      <Navbar />
+      <main role="main">{children}</main>
+    </>
   );
 }
