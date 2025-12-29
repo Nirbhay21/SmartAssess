@@ -1,5 +1,6 @@
 import { Stars } from 'lucide-react';
 import CandidateTestMockup from './CandidateTestMockup';
+import Link from 'next/link';
 
 const HeroSection = () => {
   return (
@@ -25,9 +26,12 @@ const HeroSection = () => {
             anti-cheating controls—so you hire faster and smarter.
           </p>
           <div className="xsm:flex-row xsm:space-x-6 xsm:space-y-0 xsm:justify-center flex flex-col space-y-5 lg:justify-stretch">
-            <button className="bg-primary font-inter active:bg-primary/75 hover:bg-primary/90 cursor-pointer rounded-lg px-8 py-3 font-semibold text-white transition-[transform,background-color] duration-150 hover:scale-102 active:scale-100">
+            <Link
+              href="/signup"
+              className="bg-primary font-inter active:bg-primary/75 hover:bg-primary/90 cursor-pointer rounded-lg px-8 py-3 font-semibold text-white transition-[transform,background-color] duration-150 hover:scale-102 active:scale-100"
+            >
               Sign Up for Free
-            </button>
+            </Link>
             <button className="text-primary border-border/70 hover:border-border font-poppins dark:text-background cursor-pointer rounded-lg border bg-white px-8 py-3 font-semibold transition-[transform] duration-150 hover:scale-102 active:scale-100">
               View Documentation
             </button>

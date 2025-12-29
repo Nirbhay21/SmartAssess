@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 
+html {
+  color-scheme: light dark;
+}
+
 :root {
   --primary: #00145d;
   --secondary: #5ca8ff;
@@ -7,15 +11,20 @@
   --foreground: #050315;
   --background: #fbfbfe;
 
+  --secondary-faint: #5ca8ff2b;
+
   --muted: #f1f1f5;
   --muted-foreground: #6b6b8b;
 
   --border: #d7d7e5;
-  --input: #ffffff;
+  --border-strong: #c3c3d6;
+  --input: #eaeaf3;
   --ring: #5ca8ff;
 
   --card: #ffffff;
   --card-foreground: #524f64;
+
+  --tooltip: #eef4fb;
 
   --success: #16a34a;
   --warning: #facc15;
@@ -34,10 +43,13 @@
   --color-foreground: var(--foreground);
   --color-background: var(--background);
 
+  --color-secondary-faint: var(--secondary-faint);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
 
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
@@ -48,6 +60,8 @@
   --color-warning: var(--warning);
   --color-danger: var(--danger);
   --color-info: var(--info);
+
+  --color-tooltip: var(--tooltip);
 
   --font-inter: var(--font-inter);
   --font-poppins: var(--font-poppins);
@@ -72,15 +86,20 @@
   --foreground: #eae9fc;
   --background: #010104;
 
+  --secondary-faint: #5ca8ff1c;
+
   --muted: #1c1c28;
   --muted-foreground: #9494b5;
 
   --border: #2e2e3f;
-  --input: #0b0b12;
+  --border-strong: #3a3a52;
+  --input: #303049;
   --ring: #124f96;
 
   --card: #0f0f17;
   --card-foreground: #eae9fc;
+
+  --tooltip: #111827;
 
   --success: #22c55e;
   --warning: #eab308;
