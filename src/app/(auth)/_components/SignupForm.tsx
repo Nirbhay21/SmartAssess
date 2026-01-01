@@ -115,7 +115,7 @@ const SignupForm = () => {
         variant="standard"
       />
 
-      <GoogleAndGithubProviders userType={activeUserType} className="mt-2" />
+      <GoogleAndGithubProviders providerFor="signup" userType={activeUserType} className="mt-2" />
 
       <div>
         <div className="relative my-2 h-px bg-black/35 dark:bg-white/35">

@@ -7,8 +7,8 @@ import * as motion from 'motion/react-client';
 
 interface FormFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   icon: LucideIcon;
-  error: string | null;
-  helpText: string | null;
+  error?: string | null;
+  helpText?: string | null;
 }
 
 const FormField = ({
