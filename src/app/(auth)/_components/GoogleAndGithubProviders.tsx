@@ -2,10 +2,16 @@ import GithubIcon from '@/components/ui/icons/GithubIcon';
 import GoogleIcon from '@/components/ui/icons/GoogleIcon';
 import { cn } from '@/lib/cn';
 
-interface GoogleAndGithubProvidersProps {
-  userType: UserType;
-  className?: string;
-}
+type GoogleAndGithubProvidersProps =
+  | {
+      providerFor: 'signin';
+      className?: string;
+    }
+  | {
+      providerFor: 'signup';
+      userType: UserType;
+      className?: string;
+    };
 
 const ProviderButton = ({
   children: icon,
@@ -27,8 +33,14 @@ const ProviderButton = ({
   );
 };
 
-const GoogleAndGithubProviders = ({ userType, className }: GoogleAndGithubProvidersProps) => {
-  console.log(userType);
+const GoogleAndGithubProviders = (props: GoogleAndGithubProvidersProps) => {
+  const { className, providerFor } = props;
+
+  if (providerFor === 'signup') {
+    const { userType } = props;
+    // You can use userType for any specific logic if needed
+  }
+
   return (
     <div className={cn('xxs:space-x-4 flex space-x-3', className)}>
       <ProviderButton label="Google">
