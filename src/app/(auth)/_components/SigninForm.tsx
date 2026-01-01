@@ -93,7 +93,7 @@ const SigninForm = () => {
       <div className="mt-2 mb-4 text-end">
         <TextLink href="/forgot-password">Forgot your password?</TextLink>
       </div>
-      <AuthSubmitButton className="w-full" loading={isSubmitting}>
+      <AuthSubmitButton className="w-full" loading={isSubmitting} loadingText="Signing in…">
         Sign In
       </AuthSubmitButton>
     </form>
