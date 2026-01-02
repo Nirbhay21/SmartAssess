@@ -11,6 +11,10 @@ import AuthErrorMessage from './AuthErrorMessage';
 import { AnimatePresence } from 'motion/react';
 
 type SigninField = 'email' | 'password';
+interface SigninFormData {
+  email: string;
+  password: string;
+}
 
 const SigninForm = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +24,7 @@ const SigninForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const signin = async (data: { email: string; password: string }) => {
+  const signin = async (data: SigninFormData) => {
     // Simulate an API call
     return new Promise<void>((resolve, reject) => {
       setTimeout(() => {

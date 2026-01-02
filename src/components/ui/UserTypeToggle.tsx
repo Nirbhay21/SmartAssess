@@ -70,7 +70,7 @@ const UserTypeToggle = ({
           onClick={() => onChange(user.value)}
         >
           <user.icon className="xsm:h-6 xsm:w-6 h-5 w-5"></user.icon>
-          <span className="text-sm">
+          <span className="text-sm whitespace-nowrap">
             <span className="xs:inline hidden">For</span> {user.label}
           </span>
         </button>
