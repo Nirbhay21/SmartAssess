@@ -4,22 +4,19 @@ import SigninForm from '../_components/SigninForm';
 import BrandLogo from '../_components/BrandLogo';
 
 const AuthCardHeader = () => (
-  <>
+  <header>
     <BrandLogo />
     <h4 className="font-montserrat text-foreground/85 mb-1 text-2xl font-bold">Welcome back</h4>
     <p className="font-inter text-muted-foreground mb-6">
       Sign in to continue managing interviews and assessments.
     </p>
-  </>
+  </header>
 );
 
 const AuthCardFooter = () => (
-  <p className="font-inter text-sm">
-    Don&apos;t have an account?{' '}
-    <TextLink href="/signup" className="text-primary hover:underline">
-      Sign up
-    </TextLink>
-  </p>
+  <footer className="font-inter text-sm">
+    Don&apos;t have an account? <TextLink href="/signup">Sign up</TextLink>
+  </footer>
 );
 
 const SigninPage = () => {

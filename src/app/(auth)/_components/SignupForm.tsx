@@ -8,7 +8,9 @@ import React, { useState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
 import GoogleAndGithubProviders from './GoogleAndGithubProviders';
-import { cn } from '@/lib/cn';
+import AuthDivider from './AuthDivider';
+import AuthSubmitButton from './AuthSubmitButton';
+import AuthErrorMessage from './AuthErrorMessage';
 
 type CommonFormFields = 'fullname' | 'email' | 'password';
 
@@ -52,8 +54,19 @@ const SignupForm = () => {
     password: '',
     termsAccepted: false,
   });
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const signup = async (data: SignupFormData) => {
+    return new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        reject(new Error('Signup failed'));
+      }, 800);
+    });
+  };
 
   const updateCommonField = (field: CommonFormFields, value: string) => {
+    setError(null);
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -61,6 +74,7 @@ const SignupForm = () => {
   };
 
   const updateCompanyName = (value: string) => {
+    setError(null);
     setFormData((prev) => {
       if (prev.accountType === 'recruiter') {
         return {
@@ -99,12 +113,21 @@ const SignupForm = () => {
     });
   };
 
-  console.log(formData);
-
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('Form submitted:', formData);
     // Handle form submission logic here
+
+    if (isSubmitting) return;
+
+    try {
+      setIsSubmitting(true);
+      await signup(formData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -117,12 +140,12 @@ const SignupForm = () => {
 
       <GoogleAndGithubProviders providerFor="signup" userType={activeUserType} className="mt-2" />
 
-      <div>
-        <div className="relative my-2 h-px bg-black/35 dark:bg-white/35">
-          <span className="bg-card font-poppins text-muted-foreground xsm:text-sm absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 px-2 text-xs font-semibold capitalize">
-            Or Continue With
-          </span>
-        </div>
+      <AuthDivider label="or continue with" />
+
+      <div className="mb-4">
+        <AnimatePresence mode="wait">
+          {error && <AuthErrorMessage message={error} key={error} />}
+        </AnimatePresence>
       </div>
 
       <AnimatePresence initial={false} mode="popLayout">
@@ -136,6 +159,8 @@ const SignupForm = () => {
             error={null}
             helpText={null}
             value={formData.fullname}
+            disabled={isSubmitting}
+            autoComplete="name"
             onChange={(event) => updateCommonField('fullname', event.currentTarget.value)}
           />
         </AnimatedField>
@@ -150,6 +175,8 @@ const SignupForm = () => {
             error={null}
             helpText={null}
             value={formData.email}
+            disabled={isSubmitting}
+            autoComplete="email"
             onChange={(event) => updateCommonField('email', event.currentTarget.value)}
           />
         </AnimatedField>
@@ -165,6 +192,8 @@ const SignupForm = () => {
               error={null}
               helpText={null}
               value={formData.companyName}
+              disabled={isSubmitting}
+              autoComplete="organization"
               onChange={(event) => updateCompanyName(event.currentTarget.value)}
             />
           </AnimatedField>
@@ -180,6 +209,8 @@ const SignupForm = () => {
             error={null}
             helpText={null}
             value={formData.password}
+            disabled={isSubmitting}
+            autoComplete="new-password"
             onChange={(event) => updateCommonField('password', event.currentTarget.value)}
           />
         </AnimatedField>
@@ -211,17 +242,9 @@ const SignupForm = () => {
         </span>
       </label>
 
-      <button
-        type="submit"
-        disabled={!formData.termsAccepted}
-        className={cn(
-          'bg-primary font-poppins mt-1.5 cursor-pointer rounded-xl px-4 py-4 font-semibold text-white',
-          !formData.termsAccepted && 'cursor-auto opacity-70',
-          'hover:bg-primary/90 active:bg-primary/80 transition-[background-color,scale] duration-200 active:scale-98',
-        )}
-      >
-        Create Account
-      </button>
+      <AuthSubmitButton className="w-full" loading={isSubmitting} loadingText="Signing up…">
+        Sign Up
+      </AuthSubmitButton>
     </form>
   );
 };
