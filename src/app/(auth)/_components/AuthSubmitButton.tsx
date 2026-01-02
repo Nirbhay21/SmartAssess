@@ -5,6 +5,7 @@ import * as motion from 'motion/react-client';
 
 type AuthSubmitButtonProps = HTMLMotionProps<'button'> & {
   loading?: boolean;
+  loadingText?: string;
 };
 
 const Spinner = () => {
@@ -27,6 +28,7 @@ const AuthSubmitButton = ({
   children,
   disabled,
   loading = false,
+  loadingText,
   className,
   ...props
 }: AuthSubmitButtonProps) => {
@@ -58,7 +60,7 @@ const AuthSubmitButton = ({
             className="flex items-center gap-3"
           >
             <Spinner />
-            <span className="text-accent text-sm font-semibold">Signing in…</span>
+            <span className="text-accent text-sm font-semibold">{loadingText}</span>
           </motion.div>
         ) : (
           <motion.span
