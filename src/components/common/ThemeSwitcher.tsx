@@ -1,10 +1,11 @@
 'use client';
 
-import { Sun, Moon, LaptopMinimal, LucideIcon, Check } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { Check, LaptopMinimal, LucideIcon, Moon, Sun } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import dynamic from 'next/dynamic';
+import { useTheme } from 'next-themes';
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+
 import { cn } from '@/lib/cn';
 
 const ThemeIcon = dynamic(() => import('./ThemeIcon'), {

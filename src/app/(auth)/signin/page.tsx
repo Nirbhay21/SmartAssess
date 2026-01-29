@@ -1,7 +1,8 @@
 import TextLink from '@/components/ui/typography/TextLink';
+
 import AuthCard from '../_components/AuthCard';
-import SigninForm from '../_components/SigninForm';
 import BrandLogo from '../_components/BrandLogo';
+import SigninForm from '../_components/SigninForm';
 
 const AuthCardHeader = () => (
   <header>

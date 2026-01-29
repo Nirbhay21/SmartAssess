@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+
 import ThemeProvider from './ThemeProvider';
 
 const Providers = ({ children }: { children: ReactNode }) => {

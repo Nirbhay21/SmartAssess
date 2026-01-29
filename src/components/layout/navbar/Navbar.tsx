@@ -1,13 +1,15 @@
 'use client';
 
+import * as motion from 'motion/react-client';
 import Link from 'next/link';
+
+import { navLinks } from '@/config/nav-links';
+import { useScrollSpy } from '@/hooks/use-scroll-spy';
+import { cn } from '@/lib/cn';
+
 import Logo from '../../common/Logo';
 import ThemeSwitcher from '../../common/ThemeSwitcher';
 import HamburgerMenu from './HamburgerMenu';
-import { navLinks } from '@/config/nav-links';
-import { useScrollSpy } from '@/hooks/use-scroll-spy';
-import * as motion from 'motion/react-client';
-import { cn } from '@/lib/cn';
 
 const Navbar = () => {
   const activeSection = useScrollSpy(

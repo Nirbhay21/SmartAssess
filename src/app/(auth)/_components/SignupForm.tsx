@@ -1,16 +1,18 @@
 'use client';
 
+import { Building2Icon, CheckIcon, LockIcon, MailIcon, UserIcon } from 'lucide-react';
+import { AnimatePresence } from 'motion/react';
+import * as motion from 'motion/react-client';
+import React, { useState } from 'react';
+
 import FormField from '@/components/ui/forms/FormField';
 import TextLink from '@/components/ui/typography/TextLink';
 import UserTypeToggle from '@/components/ui/UserTypeToggle';
-import { Building2Icon, CheckIcon, LockIcon, MailIcon, UserIcon } from 'lucide-react';
-import React, { useState } from 'react';
-import { AnimatePresence } from 'motion/react';
-import * as motion from 'motion/react-client';
-import GoogleAndGithubProviders from './GoogleAndGithubProviders';
+
 import AuthDivider from './AuthDivider';
-import AuthSubmitButton from './AuthSubmitButton';
 import AuthErrorMessage from './AuthErrorMessage';
+import AuthSubmitButton from './AuthSubmitButton';
+import GoogleAndGithubProviders from './GoogleAndGithubProviders';
 
 type CommonFormFields = 'fullname' | 'email' | 'password';
 

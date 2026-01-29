@@ -1,6 +1,7 @@
 import { Stars } from 'lucide-react';
-import CandidateTestMockup from './CandidateTestMockup';
 import Link from 'next/link';
+
+import CandidateTestMockup from './CandidateTestMockup';
 
 const HeroSection = () => {
   return (

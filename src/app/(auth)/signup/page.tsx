@@ -1,9 +1,11 @@
+import { Metadata } from 'next';
+
 import Logo from '@/components/common/Logo';
 import TextLink from '@/components/ui/typography/TextLink';
-import SignupForm from '../_components/SignupForm';
-import { Metadata } from 'next';
-import BrandLogo from '../_components/BrandLogo';
+
 import AuthCard from '../_components/AuthCard';
+import BrandLogo from '../_components/BrandLogo';
+import SignupForm from '../_components/SignupForm';
 
 export const metadata: Metadata = {
   title: 'Signup',

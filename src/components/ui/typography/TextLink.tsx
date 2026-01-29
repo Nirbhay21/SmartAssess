@@ -1,5 +1,6 @@
-import { cn } from '@/lib/cn';
 import Link from 'next/link';
+
+import { cn } from '@/lib/cn';
 
 interface TextLinkProps extends React.ComponentProps<typeof Link> {
   href: string;

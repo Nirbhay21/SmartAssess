@@ -1,11 +1,12 @@
 'use client';
 
-import { useScrollLock } from '@/hooks/use-scroll-lock';
-import { AnimatePresence, motion } from 'motion/react';
-import { navLinks } from '@/config/nav-links';
 import { MoveRight } from 'lucide-react';
-import { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
+import { useState } from 'react';
+
+import { navLinks } from '@/config/nav-links';
+import { useScrollLock } from '@/hooks/use-scroll-lock';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
 import { cn } from '@/lib/cn';
 

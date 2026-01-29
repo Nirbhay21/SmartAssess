@@ -1,4 +1,5 @@
 import { BrainCircuit, FileChartColumn, LucideIcon, ShieldCheck, Workflow } from 'lucide-react';
+
 import FeatureCard from './FeatureCard';
 
 interface Features {

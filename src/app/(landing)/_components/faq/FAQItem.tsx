@@ -1,10 +1,11 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
 import { useState } from 'react';
+
+import { cn } from '@/lib/cn';
 
 interface FAQItemProps {
   id: number;

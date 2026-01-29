@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+
 import Navbar from '@/components/layout/navbar/Navbar';
 
 export const metadata: Metadata = {

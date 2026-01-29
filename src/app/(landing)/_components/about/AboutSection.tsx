@@ -1,7 +1,7 @@
-import VisionAndMission from './VisionAndMission';
-import BuiltForSection from './BuiltForSection';
-import AboutInfoSection from './AboutInfoSection';
 import AboutHeader from './AboutHeader';
+import AboutInfoSection from './AboutInfoSection';
+import BuiltForSection from './BuiltForSection';
+import VisionAndMission from './VisionAndMission';
 
 const AboutSection = () => {
   return (
