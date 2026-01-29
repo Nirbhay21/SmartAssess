@@ -1,7 +1,8 @@
-import { cn } from '@/lib/cn';
 import { Loader2Icon } from 'lucide-react';
 import { AnimatePresence, HTMLMotionProps } from 'motion/react';
 import * as motion from 'motion/react-client';
+
+import { cn } from '@/lib/cn';
 
 type AuthSubmitButtonProps = HTMLMotionProps<'button'> & {
   loading?: boolean;

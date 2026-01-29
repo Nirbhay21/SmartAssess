@@ -1,14 +1,16 @@
 'use client';
 
-import FormField from '@/components/ui/forms/FormField';
-import AuthDivider from './AuthDivider';
-import GoogleAndGithubProviders from './GoogleAndGithubProviders';
 import { LockIcon, UserIcon } from 'lucide-react';
-import TextLink from '@/components/ui/typography/TextLink';
-import AuthSubmitButton from './AuthSubmitButton';
-import { useState } from 'react';
-import AuthErrorMessage from './AuthErrorMessage';
 import { AnimatePresence } from 'motion/react';
+import { useState } from 'react';
+
+import FormField from '@/components/ui/forms/FormField';
+import TextLink from '@/components/ui/typography/TextLink';
+
+import AuthDivider from './AuthDivider';
+import AuthErrorMessage from './AuthErrorMessage';
+import AuthSubmitButton from './AuthSubmitButton';
+import GoogleAndGithubProviders from './GoogleAndGithubProviders';
 
 type SigninField = 'email' | 'password';
 interface SigninFormData {
