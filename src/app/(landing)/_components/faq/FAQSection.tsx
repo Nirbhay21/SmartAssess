@@ -1,4 +1,5 @@
 import { BotMessageSquare } from 'lucide-react';
+
 import FAQItem from './FAQItem';
 import SplitFaqLayout from './SplitFaqLayout';
 

@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { FAQItem } from './FAQSection';
 import { ChevronRight } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
-import FeedbackLikeDislike from './FeedbackLikeDislike';
+import { useState } from 'react';
+
 import { cn } from '@/lib/cn';
+
+import { FAQItem } from './FAQSection';
+import FeedbackLikeDislike from './FeedbackLikeDislike';
 
 interface SplitFaqLayoutProps {
   faqs: FAQItem[];

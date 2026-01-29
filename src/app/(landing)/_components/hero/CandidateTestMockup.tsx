@@ -1,5 +1,6 @@
-import { cn } from '@/lib/cn';
 import { Check, Stars } from 'lucide-react';
+
+import { cn } from '@/lib/cn';
 
 const CandidateTestMockup = () => {
   return (

@@ -1,8 +1,9 @@
 'use client';
 
-import { cn } from '@/lib/cn';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import { useState } from 'react';
+
+import { cn } from '@/lib/cn';
 
 type Feedback = 'like' | 'dislike' | null;
 
