@@ -1,104 +1,101 @@
 'use client';
 
-import { LockIcon, UserIcon } from 'lucide-react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { LockIcon, MailIcon } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
 import FormField from '@/components/ui/forms/FormField';
 import TextLink from '@/components/ui/typography/TextLink';
+import { authClient } from '@/lib/auth-client';
+import { EmailSigninFormData, EmailSigninSchema } from '@/lib/validation/auth/email-signin.schema';
 
 import AuthDivider from './AuthDivider';
 import AuthErrorMessage from './AuthErrorMessage';
 import AuthSubmitButton from './AuthSubmitButton';
 import GoogleAndGithubProviders from './GoogleAndGithubProviders';
 
-type SigninField = 'email' | 'password';
-interface SigninFormData {
-  email: string;
-  password: string;
-}
-
 const SigninForm = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+    clearErrors,
+  } = useForm<EmailSigninFormData>({
+    resolver: zodResolver(EmailSigninSchema),
+    mode: 'onSubmit',
   });
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const signin = async (data: SigninFormData) => {
-    // Simulate an API call
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        reject(new Error('Invalid email or password'));
-      }, 800);
-    });
-  };
-
-  const handleOnChange = (value: string, field: SigninField) => {
-    setError(null);
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleOnSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Signin Form Data:', formData);
-    // Handle form submission logic here
-
-    if (isSubmitting) return;
-
+  const signin = async (data: EmailSigninFormData) => {
     try {
-      setIsSubmitting(true);
-      const data = { email: formData.email, password: formData.password };
-      await signin(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
-    } finally {
-      setIsSubmitting(false);
+      await authClient.signIn.email(data, {
+        onError: (error) => {
+          setError('root', {
+            type: 'server',
+            message: error.error.message || 'An unexpected error occurred. Please try again.',
+          });
+        },
+        onSuccess: () => {
+          router.push('/dashboard');
+        },
+      });
+    } catch (error) {
+      setError('root', {
+        type: 'server',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'An unexpected error occurred. Please try again.',
+      });
     }
   };
 
   return (
-    <form onSubmit={handleOnSubmit}>
-      <GoogleAndGithubProviders providerFor="signin" />
+    <form className="font-inter flex flex-col space-y-4" onSubmit={handleSubmit(signin)} noValidate>
+      <GoogleAndGithubProviders providerFor="signin" className="mb-1.5" />
+
       <AuthDivider label="or continue with" />
+
       <div className="mb-4">
         <AnimatePresence mode="wait">
-          {error && <AuthErrorMessage message={error} key={error} />}
+          {errors.root?.message && <AuthErrorMessage message={errors.root.message} />}
         </AnimatePresence>
       </div>
+
       <div className="space-y-4">
         <FormField
           id="email"
           type="email"
-          icon={UserIcon}
-          placeholder="Email"
-          error={null}
-          helpText={null}
-          value={formData.email}
-          disabled={isSubmitting}
+          placeholder="Email address"
+          icon={MailIcon}
           autoComplete="email"
-          onChange={(e) => handleOnChange(e.target.value, 'email')}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+          error={errors.email?.message}
+          {...register('email', { onChange: () => clearErrors('root') })}
         />
+
         <FormField
           id="password"
           type="password"
-          icon={LockIcon}
           placeholder="Password"
-          error={null}
-          helpText={null}
-          value={formData.password}
-          disabled={isSubmitting}
+          icon={LockIcon}
           autoComplete="current-password"
-          onChange={(e) => handleOnChange(e.target.value, 'password')}
+          disabled={isSubmitting}
+          aria-disabled={isSubmitting}
+          error={errors.password?.message}
+          {...register('password', { onChange: () => clearErrors('root') })}
         />
       </div>
+
       <div className="mt-2 mb-4 text-end">
         <TextLink href="/forgot-password">Forgot your password?</TextLink>
       </div>
+
       <AuthSubmitButton className="w-full" loading={isSubmitting} loadingText="Signing in…">
         Sign In
       </AuthSubmitButton>
