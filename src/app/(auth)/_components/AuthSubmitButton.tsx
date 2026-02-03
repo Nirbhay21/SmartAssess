@@ -42,7 +42,7 @@ const AuthSubmitButton = ({
       aria-busy={loading}
       whileTap={!isDisabled ? { scale: 0.97 } : undefined}
       className={cn(
-        'relative mt-2 flex h-14 w-full items-center justify-center gap-3 overflow-hidden rounded-xl',
+        'relative mt-2 flex h-14 w-full cursor-pointer items-center justify-center gap-3 overflow-hidden rounded-xl',
         'bg-primary font-poppins font-semibold text-white',
         'transition-colors duration-200',
         isDisabled ? 'cursor-not-allowed opacity-80' : 'hover:bg-primary/90',

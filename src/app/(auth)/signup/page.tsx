@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 
-import Logo from '@/components/common/Logo';
 import TextLink from '@/components/ui/typography/TextLink';
 
 import AuthCard from '../_components/AuthCard';
