@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import { navLinks } from '@/config/nav-links';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 
 import Logo from '../../common/Logo';
 import ThemeSwitcher from '../../common/ThemeSwitcher';

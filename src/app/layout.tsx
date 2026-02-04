@@ -4,7 +4,7 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter, Montserrat, Poppins } from 'next/font/google';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 import Providers from '@/providers/providers';
 
 export const metadata: Metadata = {

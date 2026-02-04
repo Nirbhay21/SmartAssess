@@ -3,7 +3,7 @@ import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
 import { InputHTMLAttributes, useState } from 'react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 
 import HelpTooltip from '../tooltip/HelpTooltip';
 

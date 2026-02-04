@@ -1,6 +1,6 @@
 import { LucideIcon } from 'lucide-react';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 
 interface FeatureCardProps {
   title: string;

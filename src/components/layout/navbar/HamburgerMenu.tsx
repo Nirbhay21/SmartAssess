@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { navLinks } from '@/config/nav-links';
 import { useScrollLock } from '@/hooks/use-scroll-lock';
 import { useScrollSpy } from '@/hooks/use-scroll-spy';
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 
 const HamburgerMenu = () => {
   const [open, setOpen] = useState<boolean>(false);
