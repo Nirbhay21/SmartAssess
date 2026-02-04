@@ -1,17 +1,27 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* Dark mode is controlled via data-theme attribute */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 html {
   color-scheme: light dark;
 }
 
 :root {
-  --primary: #00145d;
-  --secondary: #5ca8ff;
-  --accent: #00ccff;
+  /* =========================================================
+    Brand tokens
+   ========================================================= */
   --foreground: #050315;
   --background: #fbfbfe;
 
+  --primary: #00145d;
+  --primary-foreground: #ffffff;
+  --secondary: #5ca8ff;
   --secondary-faint: #5ca8ff2b;
+  --secondary-foreground: #00145d;
+  --accent: #00ccff;
+  --accent-foreground: #00145d;
 
   --muted: #f1f1f5;
   --muted-foreground: #6b6b8b;
@@ -33,60 +43,92 @@ html {
 
   --primary-logo: #00145d;
   --secondary-logo: #5ca8ff;
+
+  --radius: 0.625rem;
+
+  --popover: var(--card);
+  --popover-foreground: var(--card-foreground);
+
+  --destructive: var(--danger);
+
+  --chart-1: var(--primary);
+  --chart-2: var(--secondary);
+  --chart-3: var(--accent);
+  --chart-4: var(--success);
+  --chart-5: var(--warning);
+
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: #00145d;
+
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* =======================================================
+     shadcn UI tokens (neutral palette)
+     - Used by shadcn inside [data-shadcn] scope
+     ======================================================= */
+  --ui-background: oklch(1 0 0);
+  --ui-foreground: oklch(0.141 0.005 285.823);
+
+  --ui-card: oklch(1 0 0);
+  --ui-card-foreground: oklch(0.141 0.005 285.823);
+  --ui-popover: oklch(1 0 0);
+  --ui-popover-foreground: oklch(0.141 0.005 285.823);
+
+  --ui-primary: oklch(0.21 0.006 285.885);
+  --ui-primary-foreground: oklch(0.985 0 0);
+  --ui-secondary: oklch(0.967 0.001 286.375);
+  --ui-secondary-foreground: oklch(0.21 0.006 285.885);
+  --ui-muted: oklch(0.967 0.001 286.375);
+  --ui-muted-foreground: oklch(0.552 0.016 285.938);
+  --ui-accent: oklch(0.967 0.001 286.375);
+  --ui-accent-foreground: oklch(0.21 0.006 285.885);
+
+  --ui-destructive: oklch(0.577 0.245 27.325);
+
+  --ui-border: oklch(0.92 0.004 286.32);
+  --ui-input: oklch(0.92 0.004 286.32);
+  --ui-ring: oklch(0.705 0.015 286.067);
+
+  --ui-chart-1: oklch(0.646 0.222 41.116);
+  --ui-chart-2: oklch(0.6 0.118 184.704);
+  --ui-chart-3: oklch(0.398 0.07 227.392);
+  --ui-chart-4: oklch(0.828 0.189 84.429);
+  --ui-chart-5: oklch(0.769 0.188 70.08);
+
+  --ui-sidebar: oklch(0.985 0 0);
+  --ui-sidebar-foreground: oklch(0.141 0.005 285.823);
+  --ui-sidebar-primary: oklch(0.21 0.006 285.885);
+  --ui-sidebar-primary-foreground: oklch(0.985 0 0);
+  --ui-sidebar-accent: oklch(0.967 0.001 286.375);
+  --ui-sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --ui-sidebar-border: oklch(0.92 0.004 286.32);
+  --ui-sidebar-ring: oklch(0.705 0.015 286.067);
 }
 
-@theme {
-  /* Colors -  */
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
-  --color-foreground: var(--foreground);
-  --color-background: var(--background);
-
-  --color-secondary-faint: var(--secondary-faint);
-
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-danger: var(--danger);
-  --color-info: var(--info);
-
-  --color-tooltip: var(--tooltip);
-
-  --font-inter: var(--font-inter);
-  --font-poppins: var(--font-poppins);
-  --font-montserrat: var(--font-montserrat);
-
-  /* Shadows -  */
-  --shadow-glow-xs: 0px 0px 0.625rem 0px var(--tw-shadow-color); /* blur - 10px */
-  --shadow-glow-sm: 0px 0px 1.875rem 0px var(--tw-shadow-color); /* blur - 30px */
-  --shadow-glow-lg: 0px 0px 3.75rem 0px var(--tw-shadow-color); /* blur - 60px */
-  --shadow-glow-xl: 0px 0px 7.5rem 0px var(--tw-shadow-color); /* blur - 120px */
-
-  /* Breakpoints -  */
-  --breakpoint-xxs: 23.4375rem; /* 375px */
-  --breakpoint-xs: 28.75rem; /* 460px */
-  --breakpoint-xsm: 35rem; /* 560px */
-}
-
+/* =========================================================
+   Dark theme overrides
+   ========================================================= */
 [data-theme='dark'] {
-  --primary: #00145d;
-  --secondary: #124f96;
-  --accent: #00ccff;
+  /* ===============================================
+      Brand tokens
+  ================================================== */
   --foreground: #eae9fc;
   --background: #010104;
 
+  --primary: #00145d;
+  --primary-foreground: #ffffff;
+  --secondary: #124f96;
   --secondary-faint: #5ca8ff1c;
+  --secondary-foreground: #eae9fc;
+  --accent: #00ccff;
+  --accent-foreground: #eae9fc;
 
   --muted: #1c1c28;
   --muted-foreground: #9494b5;
@@ -108,10 +150,200 @@ html {
 
   --primary-logo: #001c81;
   --secondary-logo: #c6f2ff;
+
+  --popover: var(--card);
+  --popover-foreground: var(--card-foreground);
+
+  --destructive: var(--danger);
+
+  --chart-1: var(--primary);
+  --chart-2: var(--secondary);
+  --chart-3: var(--accent);
+  --chart-4: var(--success);
+  --chart-5: var(--warning);
+
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: #eae9fc;
+
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* ======================================================
+      Shadcn UI tokens
+  ======================================================= */
+  --ui-background: oklch(0.141 0.005 285.823);
+  --ui-foreground: oklch(0.985 0 0);
+
+  --ui-card: oklch(0.21 0.006 285.885);
+  --ui-card-foreground: oklch(0.985 0 0);
+  --ui-popover: oklch(0.21 0.006 285.885);
+  --ui-popover-foreground: oklch(0.985 0 0);
+
+  --ui-primary: oklch(0.92 0.004 286.32);
+  --ui-primary-foreground: oklch(0.21 0.006 285.885);
+  --ui-secondary: oklch(0.274 0.006 286.033);
+  --ui-secondary-foreground: oklch(0.985 0 0);
+  --ui-muted: oklch(0.274 0.006 286.033);
+  --ui-muted-foreground: oklch(0.705 0.015 286.067);
+  --ui-accent: oklch(0.274 0.006 286.033);
+  --ui-accent-foreground: oklch(0.985 0 0);
+
+  --ui-destructive: oklch(0.704 0.191 22.216);
+
+  --ui-border: oklch(1 0 0 / 10%);
+  --ui-input: oklch(1 0 0 / 15%);
+  --ui-ring: oklch(0.552 0.016 285.938);
+
+  --ui-chart-1: oklch(0.488 0.243 264.376);
+  --ui-chart-2: oklch(0.696 0.17 162.48);
+  --ui-chart-3: oklch(0.769 0.188 70.08);
+  --ui-chart-4: oklch(0.627 0.265 303.9);
+  --ui-chart-5: oklch(0.645 0.246 16.439);
+
+  --ui-sidebar: oklch(0.21 0.006 285.885);
+  --ui-sidebar-foreground: oklch(0.985 0 0);
+  --ui-sidebar-primary: oklch(0.488 0.243 264.376);
+  --ui-sidebar-primary-foreground: oklch(0.985 0 0);
+  --ui-sidebar-accent: oklch(0.274 0.006 286.033);
+  --ui-sidebar-accent-foreground: oklch(0.985 0 0);
+  --ui-sidebar-border: oklch(1 0 0 / 10%);
+  --ui-sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+/* =========================================================
+   Brand tokens and shadcn UI tokens mappings with 
+   Tailwind Theme variables
+   ========================================================= */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-faint: var(--secondary-faint);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-tooltip: var(--tooltip);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Fonts injected by next/font via CSS variables */
+  --font-inter: var(--font-inter);
+  --font-poppins: var(--font-poppins);
+  --font-montserrat: var(--font-montserrat);
+
+  --shadow-glow-xs: 0px 0px 0.625rem 0px var(--tw-shadow-color);
+  --shadow-glow-sm: 0px 0px 1.875rem 0px var(--tw-shadow-color);
+  --shadow-glow-lg: 0px 0px 3.75rem 0px var(--tw-shadow-color);
+  --shadow-glow-xl: 0px 0px 7.5rem 0px var(--tw-shadow-color);
+
+  --breakpoint-xxs: 23.4375rem;
+  --breakpoint-xs: 28.75rem;
+  --breakpoint-xsm: 35rem;
+}
+
+/* =========================================================
+   Shadcn UI tokens mappings
+   - Used by shadcn inside [data-shadcn] scope
+   - All shadcn components should be wrapped inside a 
+     [data-shadcn] container to apply these tokens
+   ========================================================= */
+[data-shadcn] {
+  --background: var(--ui-background);
+  --foreground: var(--ui-foreground);
+
+  --card: var(--ui-card);
+  --card-foreground: var(--ui-card-foreground);
+  --popover: var(--ui-popover);
+  --popover-foreground: var(--ui-popover-foreground);
+
+  --primary: var(--ui-primary);
+  --primary-foreground: var(--ui-primary-foreground);
+  --secondary: var(--ui-secondary);
+  --secondary-foreground: var(--ui-secondary-foreground);
+  --muted: var(--ui-muted);
+  --muted-foreground: var(--ui-muted-foreground);
+  --accent: var(--ui-accent);
+  --accent-foreground: var(--ui-accent-foreground);
+
+  --destructive: var(--ui-destructive);
+
+  --border: var(--ui-border);
+  --input: var(--ui-input);
+  --ring: var(--ui-ring);
+
+  --chart-1: var(--ui-chart-1);
+  --chart-2: var(--ui-chart-2);
+  --chart-3: var(--ui-chart-3);
+  --chart-4: var(--ui-chart-4);
+  --chart-5: var(--ui-chart-5);
+
+  --sidebar: var(--ui-sidebar);
+  --sidebar-foreground: var(--ui-sidebar-foreground);
+  --sidebar-primary: var(--ui-sidebar-primary);
+  --sidebar-primary-foreground: var(--ui-sidebar-primary-foreground);
+  --sidebar-accent: var(--ui-sidebar-accent);
+  --sidebar-accent-foreground: var(--ui-sidebar-accent-foreground);
+  --sidebar-border: var(--ui-sidebar-border);
+  --sidebar-ring: var(--ui-sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: Arial, Helvetica, sans-serif;
+  }
 }
