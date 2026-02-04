@@ -1,7 +1,7 @@
 import { Briefcase, User } from 'lucide-react';
 import * as motion from 'motion/react-client';
 
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 
 interface UserTypeToggleButtonProps {
   activeUserType: UserType;

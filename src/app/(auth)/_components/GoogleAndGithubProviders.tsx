@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import GithubIcon from '@/components/ui/icons/GithubIcon';
 import GoogleIcon from '@/components/ui/icons/GoogleIcon';
 import { authClient } from '@/lib/auth-client';
-import { cn } from '@/lib/cn';
+import { cn } from '@/lib/utils';
 
 import AuthErrorMessage from './AuthErrorMessage';
 
