@@ -55,6 +55,8 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
             </FieldLabel>
 
             <MultipleSelector
+              {...field}
+              inputProps={{ id: 'topSkills', name: 'topSkills' }}
               value={field.value?.map((skill: string) => ({
                 label: skill,
                 value: skill,
@@ -88,13 +90,15 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
             </FieldLabel>
 
             <Combobox
+              name="yearsOfExperience"
+              id="yearsOfExperience"
               items={yearsOfExperienceOptions}
               value={field.value ?? ''}
               onValueChange={(value) => handleComboboxValueChange(field, value)}
               autoHighlight
             >
               <ComboboxInput
-                id="yearsOfExperience"
+                {...field}
                 onBlur={field.onBlur}
                 placeholder="Select years of experience"
                 className="font-inter"
@@ -124,7 +128,13 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
               Professional Bio
             </FieldLabel>
 
-            <Textarea {...field} maxLength={200} rows={5} className="font-inter" />
+            <Textarea
+              {...field}
+              id="professionalBio"
+              maxLength={200}
+              rows={5}
+              className="font-inter"
+            />
 
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>

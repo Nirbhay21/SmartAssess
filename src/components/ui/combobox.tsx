@@ -13,7 +13,31 @@ import {
 } from '@/components/ui/input-group';
 import { cn } from '@/lib/utils';
 
-const Combobox = ComboboxPrimitive.Root;
+function Combobox<Value, Multiple extends boolean | undefined = false>({
+  autoComplete: hiddenAutoComplete,
+  ...props
+}: React.ComponentProps<typeof ComboboxPrimitive.Root<Value, Multiple>> & {
+  /** Sets the `autocomplete` attribute on the internal hidden input rendered by base-ui. */
+  autoComplete?: string;
+}) {
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!hiddenAutoComplete || !wrapperRef.current) return;
+    const hiddenInput = wrapperRef.current.querySelector(
+      'input[aria-hidden="true"][tabindex="-1"]',
+    ) as HTMLInputElement | null;
+    if (hiddenInput) {
+      hiddenInput.setAttribute('autocomplete', hiddenAutoComplete);
+    }
+  }, [hiddenAutoComplete]);
+
+  return (
+    <div ref={wrapperRef}>
+      <ComboboxPrimitive.Root<Value, Multiple> {...props} />
+    </div>
+  );
+}
 
 function ComboboxValue({ ...props }: ComboboxPrimitive.Value.Props) {
   return <ComboboxPrimitive.Value data-slot="combobox-value" {...props} />;

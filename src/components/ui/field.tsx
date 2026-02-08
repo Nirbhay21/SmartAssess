@@ -106,10 +106,21 @@ function FieldLabel({
   required,
   optional,
   children,
+  htmlFor,
   ...props
-}: React.ComponentProps<typeof Label> & { required?: boolean; optional?: boolean }) {
+}: React.ComponentProps<typeof Label> & {
+  required?: boolean;
+  optional?: boolean;
+  htmlFor?: string;
+}) {
+  // If caller passes `htmlFor`, derive a label id so inputs can reference this label
+  // via `aria-labelledby` for better accessibility and to help static analyzers find the relation.
+  const labelId = htmlFor ? `${htmlFor}-label` : undefined;
+
   return (
     <Label
+      id={labelId}
+      htmlFor={htmlFor}
       data-slot="field-label"
       aria-required={required ? true : undefined}
       className={cn(
