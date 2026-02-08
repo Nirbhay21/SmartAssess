@@ -131,6 +131,7 @@ const StepOne = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
                 </FieldLabel>
 
                 <Combobox
+                  name={String(name)}
                   id={String(name)}
                   key={name === 'primaryRole' ? selectedDomain || 'no-domain' : undefined}
                   items={items}

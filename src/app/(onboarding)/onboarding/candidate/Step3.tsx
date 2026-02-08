@@ -13,6 +13,27 @@ import { Input } from '@/components/ui/input';
 import { COUNTRY_OPTIONS } from '@/constants/onboarding-form';
 import { CandidateOnboardingData } from '@/lib/validation/onboarding/candidate-onboarding.schema';
 
+const URL_FIELDS = [
+  {
+    name: 'portfolioUrl',
+    label: 'Portfolio URL',
+    placeholder: 'Enter your portfolio URL',
+    autoComplete: 'url',
+  },
+  {
+    name: 'linkedinUrl',
+    label: 'LinkedIn URL',
+    placeholder: 'Enter your LinkedIn URL',
+    autoComplete: 'url',
+  },
+  {
+    name: 'githubUrl',
+    label: 'GitHub URL',
+    placeholder: 'Enter your GitHub URL',
+    autoComplete: 'url',
+  },
+] as const;
+
 const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => {
   const countryOptions = COUNTRY_OPTIONS.map((country) => country.label);
 
@@ -39,6 +60,9 @@ const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) =
             </FieldLabel>
 
             <Combobox
+              id="country"
+              name="country"
+              autoComplete="country-name"
               items={countryOptions}
               value={field.value ?? ''}
               onValueChange={(value) => handleComboboxValueChange(field, value)}
@@ -47,6 +71,7 @@ const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) =
               <ComboboxInput
                 {...field}
                 id="country"
+                name="country"
                 placeholder="Select your country"
                 className="font-inter"
               />
@@ -66,48 +91,29 @@ const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) =
           </Field>
         )}
       />
-      <Controller
-        control={form.control}
-        name="portfolioUrl"
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="portfolioUrl" className="flex gap-1 font-semibold" optional>
-              Portfolio URL
-            </FieldLabel>
+      {URL_FIELDS.map(({ name, label, placeholder, autoComplete }) => (
+        <Controller
+          key={name}
+          control={form.control}
+          name={name}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={name} className="flex gap-1 font-semibold" optional>
+                {label}
+              </FieldLabel>
 
-            <Input placeholder="Enter your portfolio URL" {...field} className="font-inter" />
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
-      <Controller
-        control={form.control}
-        name="linkedinUrl"
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="linkedinUrl" className="flex gap-1 font-semibold" optional>
-              LinkedIn URL
-            </FieldLabel>
-
-            <Input placeholder="Enter your LinkedIn URL" {...field} className="font-inter" />
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
-      <Controller
-        control={form.control}
-        name="githubUrl"
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="githubUrl" className="flex gap-1 font-semibold" optional>
-              GitHub URL
-            </FieldLabel>
-
-            <Input placeholder="Enter your GitHub URL" {...field} className="font-inter" />
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
+              <Input
+                {...field}
+                id={name}
+                autoComplete={autoComplete}
+                placeholder={placeholder}
+                className="font-inter"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+      ))}
     </div>
   );
 };
