@@ -73,43 +73,43 @@ html {
      shadcn UI tokens (neutral palette)
      - Used by shadcn inside [data-shadcn] scope
      ======================================================= */
-  --ui-background: oklch(1 0 0);
-  --ui-foreground: oklch(0.141 0.005 285.823);
+  --ui-background: oklch(0.9836 0.0044 247.87);
+  --ui-foreground: oklch(0.2431 0.1293 263.48);
 
   --ui-card: oklch(1 0 0);
-  --ui-card-foreground: oklch(0.141 0.005 285.823);
+  --ui-card-foreground: oklch(0.2431 0.1293 263.48);
   --ui-popover: oklch(1 0 0);
-  --ui-popover-foreground: oklch(0.141 0.005 285.823);
+  --ui-popover-foreground: oklch(0.2431 0.1293 263.48);
 
-  --ui-primary: oklch(0.21 0.006 285.885);
-  --ui-primary-foreground: oklch(0.985 0 0);
-  --ui-secondary: oklch(0.967 0.001 286.375);
+  --ui-primary: oklch(0.721 0.1485 253.24);
+  --ui-primary-foreground: oklch(0.1738 0.0817 262.22);
+  --ui-secondary: oklch(0.7856 0.147881 224.2696);
   --ui-secondary-foreground: oklch(0.21 0.006 285.885);
-  --ui-muted: oklch(0.967 0.001 286.375);
-  --ui-muted-foreground: oklch(0.552 0.016 285.938);
-  --ui-accent: oklch(0.967 0.001 286.375);
-  --ui-accent-foreground: oklch(0.21 0.006 285.885);
+  --ui-muted: oklch(0.9596 0.0067 251.51);
+  --ui-muted-foreground: oklch(0.459 0.0801 271.22);
+  --ui-accent: oklch(0.9658 0.0269 214.43);
+  --ui-accent-foreground: oklch(0.2431 0.1293 263.48);
 
-  --ui-destructive: oklch(0.577 0.245 27.325);
+  --ui-destructive: oklch(0.6356 0.2082 25.38);
 
-  --ui-border: oklch(0.92 0.004 286.32);
-  --ui-input: oklch(0.92 0.004 286.32);
-  --ui-ring: oklch(0.705 0.015 286.067);
+  --ui-border: oklch(0.9188 0.0135 251.57);
+  --ui-input: oklch(0.9188 0.0135 251.57);
+  --ui-ring: oklch(0.721 0.1485 253.24);
 
-  --ui-chart-1: oklch(0.646 0.222 41.116);
-  --ui-chart-2: oklch(0.6 0.118 184.704);
-  --ui-chart-3: oklch(0.398 0.07 227.392);
-  --ui-chart-4: oklch(0.828 0.189 84.429);
-  --ui-chart-5: oklch(0.769 0.188 70.08);
+  --ui-chart-1: hsl(212, 100%, 68%);
+  --ui-chart-2: hsl(227, 100%, 18%);
+  --ui-chart-3: hsl(192, 100%, 50%);
+  --ui-chart-4: hsl(205, 100%, 45%);
+  --ui-chart-5: hsl(215, 60%, 80%);
 
-  --ui-sidebar: oklch(0.985 0 0);
-  --ui-sidebar-foreground: oklch(0.141 0.005 285.823);
-  --ui-sidebar-primary: oklch(0.21 0.006 285.885);
-  --ui-sidebar-primary-foreground: oklch(0.985 0 0);
-  --ui-sidebar-accent: oklch(0.967 0.001 286.375);
-  --ui-sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --ui-sidebar-border: oklch(0.92 0.004 286.32);
-  --ui-sidebar-ring: oklch(0.705 0.015 286.067);
+  --ui-sidebar: hsl(212, 100%, 99%);
+  --ui-sidebar-foreground: hsl(227, 100%, 18%);
+  --ui-sidebar-primary: hsl(212, 100%, 68%);
+  --ui-sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --ui-sidebar-accent: hsl(212, 30%, 95%);
+  --ui-sidebar-accent-foreground: hsl(227, 100%, 18%);
+  --ui-sidebar-border: hsl(212, 30%, 92%);
+  --ui-sidebar-ring: hsl(212, 100%, 68%);
 }
 
 /* =========================================================
@@ -177,43 +177,45 @@ html {
   /* ======================================================
       Shadcn UI tokens
   ======================================================= */
-  --ui-background: oklch(0.141 0.005 285.823);
-  --ui-foreground: oklch(0.985 0 0);
 
-  --ui-card: oklch(0.21 0.006 285.885);
-  --ui-card-foreground: oklch(0.985 0 0);
-  --ui-popover: oklch(0.21 0.006 285.885);
-  --ui-popover-foreground: oklch(0.985 0 0);
+  --ui-background: hsl(227, 100%, 4%);
+  --ui-foreground: hsl(210, 50%, 98%);
 
-  --ui-primary: oklch(0.92 0.004 286.32);
-  --ui-primary-foreground: oklch(0.21 0.006 285.885);
-  --ui-secondary: oklch(0.274 0.006 286.033);
-  --ui-secondary-foreground: oklch(0.985 0 0);
-  --ui-muted: oklch(0.274 0.006 286.033);
-  --ui-muted-foreground: oklch(0.705 0.015 286.067);
-  --ui-accent: oklch(0.274 0.006 286.033);
-  --ui-accent-foreground: oklch(0.985 0 0);
+  --ui-card: hsl(227, 100%, 6%);
+  --ui-card-foreground: hsl(210, 50%, 98%);
+  --ui-popover: hsl(227, 100%, 6%);
+  --ui-popover-foreground: hsl(210, 50%, 98%);
+  --ui-primary: hsl(212, 100%, 68%);
+  --ui-primary-foreground: hsl(227, 100%, 10%);
+  --ui-secondary: hsl(192, 100%, 50%);
+  --ui-secondary-foreground: hsl(227, 100%, 10%);
+  --ui-accent: hsl(227, 60%, 12%);
+  --ui-accent-foreground: hsl(210, 50%, 98%);
 
-  --ui-destructive: oklch(0.704 0.191 22.216);
+  --ui-muted: hsl(227, 50%, 15%);
+  --ui-muted-foreground: hsl(212, 20%, 70%);
 
-  --ui-border: oklch(1 0 0 / 10%);
-  --ui-input: oklch(1 0 0 / 15%);
-  --ui-ring: oklch(0.552 0.016 285.938);
+  --ui-destructive: hsl(0, 62%, 30%);
+  --ui-destructive-foreground: hsl(0, 0%, 100%);
 
-  --ui-chart-1: oklch(0.488 0.243 264.376);
-  --ui-chart-2: oklch(0.696 0.17 162.48);
-  --ui-chart-3: oklch(0.769 0.188 70.08);
-  --ui-chart-4: oklch(0.627 0.265 303.9);
-  --ui-chart-5: oklch(0.645 0.246 16.439);
+  --ui-border: hsl(227, 50%, 20%);
+  --ui-input: hsl(227, 50%, 20%);
+  --ui-ring: hsl(212, 100%, 68%);
 
-  --ui-sidebar: oklch(0.21 0.006 285.885);
-  --ui-sidebar-foreground: oklch(0.985 0 0);
-  --ui-sidebar-primary: oklch(0.488 0.243 264.376);
-  --ui-sidebar-primary-foreground: oklch(0.985 0 0);
-  --ui-sidebar-accent: oklch(0.274 0.006 286.033);
-  --ui-sidebar-accent-foreground: oklch(0.985 0 0);
-  --ui-sidebar-border: oklch(1 0 0 / 10%);
-  --ui-sidebar-ring: oklch(0.552 0.016 285.938);
+  --ui-chart-1: hsl(212, 100%, 68%);
+  --ui-chart-2: hsl(192, 100%, 50%);
+  --ui-chart-3: hsl(227, 100%, 40%);
+  --ui-chart-4: hsl(215, 60%, 60%);
+  --ui-chart-5: hsl(190, 80%, 40%);
+
+  --ui-sidebar: hsl(227, 100%, 3%);
+  --ui-sidebar-foreground: hsl(210, 20%, 90%);
+  --ui-sidebar-primary: hsl(212, 100%, 68%);
+  --ui-sidebar-primary-foreground: hsl(227, 100%, 10%);
+  --ui-sidebar-accent: hsl(227, 50%, 15%);
+  --ui-sidebar-accent-foreground: hsl(210, 50%, 98%);
+  --ui-sidebar-border: hsl(227, 50%, 20%);
+  --ui-sidebar-ring: hsl(212, 100%, 68%);
 }
 
 /* =========================================================
@@ -295,9 +297,11 @@ html {
    Shadcn UI tokens mappings
    - Used by shadcn inside [data-shadcn] scope
    - All shadcn components should be wrapped inside a 
-     [data-shadcn] container to apply these tokens
+     [data-shadcn] container to apply these tokens.
+   - Alternatively, for components rendered in portals, use
+     [data-base-ui-portal] scope to apply the tokens.
    ========================================================= */
-[data-shadcn] {
+:where([data-shadcn], [data-base-ui-portal]) {
   --background: var(--ui-background);
   --foreground: var(--ui-foreground);
 
