@@ -1,14 +1,7 @@
 import React from 'react';
-import { Controller, ControllerRenderProps, UseFormReturn, useWatch } from 'react-hook-form';
+import { Controller, FieldPath, UseFormReturn, useWatch } from 'react-hook-form';
 
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from '@/components/ui/combobox';
+import Combobox from '@/components/ui/combobox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { Textarea } from '@/components/ui/textarea';
@@ -32,114 +25,103 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
 
   const yearsOfExperienceOptions = YEARS_OF_EXPERIENCE.map((item) => item.label);
 
-  const handleComboboxValueChange = (
-    field: ControllerRenderProps<CandidateOnboardingData>,
-    value: string | null,
-  ) => {
-    const newVal = (value ?? '') as string;
-    const current = Array.isArray(field.value)
-      ? (field.value[0] ?? '')
-      : ((field.value as string | undefined) ?? '');
-    if (newVal !== current) field.onChange(newVal);
-  };
+  const fields: Array<{
+    name: FieldPath<CandidateOnboardingData>;
+    label: string;
+    type: 'multiple' | 'combobox' | 'textarea';
+    placeholder?: string;
+    defaultOptions?: Option[] | string[];
+    required?: boolean;
+  }> = [
+    {
+      name: 'topSkills',
+      label: 'Top Skills',
+      type: 'multiple',
+      placeholder: 'Select or add your top skills...',
+      defaultOptions: topSkillsOptions,
+      required: true,
+    },
+    {
+      name: 'yearsOfExperience',
+      label: 'Years of Experience',
+      type: 'combobox',
+      placeholder: 'Select years of experience',
+      defaultOptions: yearsOfExperienceOptions,
+      required: true,
+    },
+    {
+      name: 'professionalBio',
+      label: 'Professional Bio',
+      type: 'textarea',
+      required: true,
+    },
+  ];
 
   return (
     <div className="space-y-6">
-      <Controller
-        control={form.control}
-        name="topSkills"
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="topSkills" className="flex gap-1 font-semibold" required>
-              Top Skills
-            </FieldLabel>
+      {fields.map((f) => (
+        <Controller
+          key={String(f.name)}
+          control={form.control}
+          name={f.name}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel
+                htmlFor={String(f.name)}
+                className="flex gap-1 font-semibold"
+                required={f.required}
+              >
+                {f.label}
+              </FieldLabel>
 
-            <MultipleSelector
-              {...field}
-              inputProps={{ id: 'topSkills', name: 'topSkills' }}
-              value={field.value?.map((skill: string) => ({
-                label: skill,
-                value: skill,
-              }))}
-              onChange={(options) => {
-                field.onChange(options.map((option) => option.value));
-              }}
-              defaultOptions={topSkillsOptions}
-              placeholder="Select or add your top skills..."
-              badgeVariant="outline"
-              creatable
-              className="font-inter"
-              emptyIndicator={
-                <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
-                  no results found.
-                </p>
-              }
-            />
+              {f.type === 'multiple' && (
+                <MultipleSelector
+                  {...field}
+                  inputProps={{ id: String(f.name), name: String(f.name) }}
+                  value={
+                    Array.isArray(field.value)
+                      ? field.value.map((v: string) => ({ label: v, value: v }))
+                      : []
+                  }
+                  onChange={(options) => field.onChange(options.map((o) => o.value))}
+                  defaultOptions={f.defaultOptions as Option[]}
+                  placeholder={f.placeholder}
+                  badgeVariant="outline"
+                  creatable
+                  className="font-inter"
+                  emptyIndicator={
+                    <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
+                      no results found.
+                    </p>
+                  }
+                />
+              )}
 
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
-      <Controller
-        control={form.control}
-        name="yearsOfExperience"
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="yearsOfExperience" className="flex gap-1 font-semibold" required>
-              Years of Experience
-            </FieldLabel>
+              {f.type === 'combobox' && (
+                <Combobox
+                  id={String(f.name)}
+                  {...field}
+                  items={f.defaultOptions as string[]}
+                  placeholder={f.placeholder}
+                  className="font-inter w-full"
+                />
+              )}
 
-            <Combobox
-              name="yearsOfExperience"
-              id="yearsOfExperience"
-              items={yearsOfExperienceOptions}
-              value={field.value ?? ''}
-              onValueChange={(value) => handleComboboxValueChange(field, value)}
-              autoHighlight
-            >
-              <ComboboxInput
-                {...field}
-                onBlur={field.onBlur}
-                placeholder="Select years of experience"
-                className="font-inter"
-              />
-              <ComboboxContent className="font-inter">
-                <ComboboxEmpty>No items found.</ComboboxEmpty>
-                <ComboboxList>
-                  {(item) => (
-                    <ComboboxItem key={item} value={item}>
-                      {item}
-                    </ComboboxItem>
-                  )}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
+              {f.type === 'textarea' && (
+                <Textarea
+                  {...field}
+                  id={String(f.name)}
+                  maxLength={200}
+                  rows={5}
+                  className="font-inter"
+                />
+              )}
 
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
-      <Controller
-        control={form.control}
-        name="professionalBio"
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel htmlFor="professionalBio" className="flex gap-1 font-semibold" required>
-              Professional Bio
-            </FieldLabel>
-
-            <Textarea
-              {...field}
-              id="professionalBio"
-              maxLength={200}
-              rows={5}
-              className="font-inter"
-            />
-
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+      ))}
     </div>
   );
 };

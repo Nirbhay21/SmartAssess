@@ -1,20 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
-import {
-  Controller,
-  ControllerRenderProps,
-  FieldPath,
-  UseFormReturn,
-  useWatch,
-} from 'react-hook-form';
+import { Controller, FieldPath, UseFormReturn, useWatch } from 'react-hook-form';
 
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from '@/components/ui/combobox';
+import Combobox from '@/components/ui/combobox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import {
   CANDIDATE_CURRENT_STATUS,
@@ -99,17 +86,6 @@ const StepOne = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
     }
   };
 
-  const handleComboboxValueChange = (
-    field: ControllerRenderProps<CandidateOnboardingData>,
-    value: string | null,
-  ) => {
-    const newVal = (value ?? '') as string;
-    const current = Array.isArray(field.value)
-      ? (field.value[0] ?? '')
-      : ((field.value as string | undefined) ?? '');
-    if (newVal !== current) field.onChange(newVal);
-  };
-
   return (
     <div className="space-y-6">
       {FIELD_CONFIG.map(({ name, label, placeholder, required }) => (
@@ -131,37 +107,12 @@ const StepOne = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
                 </FieldLabel>
 
                 <Combobox
-                  name={String(name)}
                   id={String(name)}
-                  key={name === 'primaryRole' ? selectedDomain || 'no-domain' : undefined}
+                  {...field}
                   items={items}
-                  value={
-                    Array.isArray(field.value)
-                      ? (field.value[0] ?? '')
-                      : ((field.value as string | undefined) ?? '')
-                  }
-                  onValueChange={(value) => handleComboboxValueChange(field, value)}
-                  autoHighlight
-                >
-                  <ComboboxInput
-                    {...field}
-                    id={String(name)}
-                    placeholder={placeholder}
-                    className="font-inter"
-                  />
-
-                  <ComboboxContent className="font-inter">
-                    <ComboboxEmpty>No items found.</ComboboxEmpty>
-
-                    <ComboboxList>
-                      {(item) => (
-                        <ComboboxItem key={item} value={item}>
-                          {item}
-                        </ComboboxItem>
-                      )}
-                    </ComboboxList>
-                  </ComboboxContent>
-                </Combobox>
+                  placeholder={placeholder}
+                  className="font-inter w-full"
+                />
 
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
