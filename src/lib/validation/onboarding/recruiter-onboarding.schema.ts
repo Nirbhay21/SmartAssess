@@ -2,7 +2,10 @@ import { z } from 'zod';
 
 export const recruiterOnboardingSchema = z.object({
   // Step 1
-  organizationName: z.string().min(2, 'Organization name is required'),
+  organizationName: z
+    .string()
+    .min(1, 'Organization name is required')
+    .min(2, 'Organization name must be at least 2 characters'),
   organizationSize: z.string().min(1, 'Organization size is required'),
   industry: z.string().min(1, 'Industry is required'),
   country: z.string().min(1, 'Country is required'),

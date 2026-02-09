@@ -1,13 +1,6 @@
-import { Controller, ControllerRenderProps, UseFormReturn } from 'react-hook-form';
+import { Controller, UseFormReturn } from 'react-hook-form';
 
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-} from '@/components/ui/combobox';
+import Combobox from '@/components/ui/combobox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { COUNTRY_OPTIONS } from '@/constants/onboarding-form';
@@ -37,17 +30,6 @@ const URL_FIELDS = [
 const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => {
   const countryOptions = COUNTRY_OPTIONS.map((country) => country.label);
 
-  const handleComboboxValueChange = (
-    field: ControllerRenderProps<CandidateOnboardingData>,
-    value: string | null,
-  ) => {
-    const newVal = (value ?? '') as string;
-    const current = Array.isArray(field.value)
-      ? (field.value[0] ?? '')
-      : ((field.value as string | undefined) ?? '');
-    if (newVal !== current) field.onChange(newVal);
-  };
-
   return (
     <div className="space-y-6">
       <Controller
@@ -61,31 +43,11 @@ const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) =
 
             <Combobox
               id="country"
-              name="country"
-              autoComplete="country-name"
+              {...field}
               items={countryOptions}
-              value={field.value ?? ''}
-              onValueChange={(value) => handleComboboxValueChange(field, value)}
-              autoHighlight
-            >
-              <ComboboxInput
-                {...field}
-                id="country"
-                name="country"
-                placeholder="Select your country"
-                className="font-inter"
-              />
-              <ComboboxContent className="font-inter">
-                <ComboboxEmpty>No items found.</ComboboxEmpty>
-                <ComboboxList>
-                  {(item) => (
-                    <ComboboxItem key={item} value={item}>
-                      {item}
-                    </ComboboxItem>
-                  )}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
+              placeholder="Select your country"
+              className="font-inter w-full"
+            />
 
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>

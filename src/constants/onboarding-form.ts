@@ -1,3 +1,8 @@
+import countries from 'i18n-iso-countries';
+import en from 'i18n-iso-countries/langs/en.json';
+
+countries.registerLocale(en);
+
 export const DOMAIN_INDUSTRIES = [
   'Software & IT',
   'Computer Science & Engineering',
@@ -697,14 +702,9 @@ export const YEARS_OF_EXPERIENCE = [
   { value: '5-7', label: '5–7 years' },
   { value: '7-10', label: '7–10 years' },
   { value: '10+', label: '10+ years' },
-];
+] as const;
 
 export type YearsOfExperience = (typeof YEARS_OF_EXPERIENCE)[number]['value'];
-
-import countries from 'i18n-iso-countries';
-import en from 'i18n-iso-countries/langs/en.json';
-
-countries.registerLocale(en);
 
 export const COUNTRY_OPTIONS = Object.entries(countries.getNames('en', { select: 'official' })).map(
   ([code, name]) => ({
@@ -714,3 +714,26 @@ export const COUNTRY_OPTIONS = Object.entries(countries.getNames('en', { select:
 );
 
 export type CountryOption = (typeof COUNTRY_OPTIONS)[number];
+
+export const EXPERIENCE_LEVELS = [
+  'Internship',
+  'Entry Level',
+  'Junior (1-3 years)',
+  'Mid-Level (3-5 years)',
+  'Senior (5-8 years)',
+  'Lead / Staff (8+ years)',
+  'Executive (C-Suite / VP)',
+] as const;
+
+export type ExperienceLevel = (typeof EXPERIENCE_LEVELS)[number];
+
+export const ORGANIZATION_SIZES = [
+  '1-10 employees',
+  '11-50 employees',
+  '51-200 employees',
+  '201-500 employees',
+  '501-1000 employees',
+  '1000+ employees',
+] as const;
+
+export type OrganizationSize = (typeof ORGANIZATION_SIZES)[number];

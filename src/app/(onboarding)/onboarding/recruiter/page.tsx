@@ -1,5 +1,107 @@
-const page = () => {
-  return <main role="main" className="mx-auto max-w-7xl"></main>;
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { OnboardingCard } from '@/app/(onboarding)/_components/OnboardingCard';
+import { OnboardingHeader } from '@/app/(onboarding)/_components/OnboardingHeader';
+import {
+  RecruiterOnboardingData,
+  recruiterOnboardingSchema,
+} from '@/lib/validation/onboarding/recruiter-onboarding.schema';
+
+import StepOne from './Step1';
+import StepTwo from './Step2';
+import StepThree from './Step3';
+
+const Page = () => {
+  const form = useForm<RecruiterOnboardingData>({
+    resolver: zodResolver(recruiterOnboardingSchema),
+    mode: 'onTouched',
+    defaultValues: {
+      organizationName: '',
+      organizationSize: '',
+      industry: '',
+      country: '',
+      hiringDomains: [],
+      experienceLevelsHiring: [],
+      companyWebsite: '',
+      llmProvider: '',
+      llmApiKey: '',
+      defaultModel: '',
+    },
+  });
+
+  function onSubmit(data: RecruiterOnboardingData) {
+    console.log('Recruiter Form submitted:', data);
+    // Here you would typically make an API call to save the data
+  }
+
+  const [step, setStep] = useState<number>(0);
+
+  const steps = [
+    {
+      title: 'Organization Identity',
+      description: 'Tell us about your organization to help us tailor the experience.',
+      component: <StepOne form={form} />,
+    },
+    {
+      title: 'Hiring Needs',
+      description: 'Define the roles and experience levels you are looking for.',
+      component: <StepTwo form={form} />,
+    },
+    {
+      title: 'AI Configuration',
+      description: 'Configure your LLM provider for generating assessments and analyzing results.',
+      component: <StepThree form={form} />,
+    },
+  ];
+
+  const stepFields: (keyof RecruiterOnboardingData)[][] = [
+    ['organizationName', 'organizationSize', 'industry', 'country'],
+    ['hiringDomains', 'experienceLevelsHiring', 'companyWebsite'],
+    ['llmProvider', 'llmApiKey', 'defaultModel'],
+  ];
+
+  const nextStep = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const currentFields = stepFields[step];
+    const valid = await form.trigger(currentFields);
+
+    if (!valid) return;
+
+    setStep((s) => s + 1);
+  };
+
+  const prevStep = () => setStep((s) => s - 1);
+
+  return (
+    <main role="main" className="relative z-1 mx-auto w-full max-w-7xl flex-col">
+      <div className="mx-auto flex w-full max-w-2xl flex-col items-center">
+        <OnboardingHeader step={step} totalSteps={steps.length} stepTitle={steps[step].title} />
+        <div data-shadcn className="w-full max-w-2xl">
+          <form
+            id="recruiter-onboarding"
+            onSubmit={form.handleSubmit(onSubmit)}
+            aria-labelledby="recruiter-form-title"
+          >
+            <OnboardingCard
+              step={step}
+              totalSteps={steps.length}
+              title={steps[step].title}
+              description={steps[step].description}
+              onPrev={prevStep}
+              onNext={nextStep}
+              isSubmitting={form.formState.isSubmitting}
+            >
+              {steps[step].component}
+            </OnboardingCard>
+          </form>
+        </div>
+      </div>
+    </main>
+  );
 };
 
-export default page;
+export default Page;

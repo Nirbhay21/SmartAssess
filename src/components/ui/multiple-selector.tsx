@@ -566,6 +566,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
               align="start"
               sideOffset={6}
               onCloseAutoFocus={(e) => e.preventDefault()}
+              data-shadcn
             >
               <CommandList
                 className="bg-popover text-popover-foreground animate-in rounded-md border shadow-md outline-none"
