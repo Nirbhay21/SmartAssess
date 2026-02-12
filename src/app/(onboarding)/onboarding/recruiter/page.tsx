@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { KeyboardEvent } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -76,6 +77,18 @@ const Page = () => {
 
   const prevStep = () => setStep((s) => s - 1);
 
+  const handleFormKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
+    if (event.key !== 'Enter') return;
+
+    const target = event.target as HTMLElement | null;
+    if (!target) return;
+
+    const tagName = target.tagName.toLowerCase();
+    if (tagName === 'textarea') return;
+
+    event.preventDefault();
+  };
+
   return (
     <main role="main" className="relative z-1 mx-auto w-full max-w-7xl flex-col">
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center">
@@ -84,6 +97,7 @@ const Page = () => {
           <form
             id="recruiter-onboarding"
             onSubmit={form.handleSubmit(onSubmit)}
+            onKeyDown={handleFormKeyDown}
             aria-labelledby="recruiter-form-title"
           >
             <OnboardingCard

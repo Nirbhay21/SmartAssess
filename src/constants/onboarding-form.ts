@@ -694,7 +694,7 @@ export const TOP_SKILLS_BY_DOMAIN: Record<DomainIndustry, string[]> = {
 export type TopSkillByDomain<D extends DomainIndustry> = (typeof TOP_SKILLS_BY_DOMAIN)[D][number];
 
 export const YEARS_OF_EXPERIENCE = [
-  { value: '0', label: 'Fresher (0 years)' },
+  { value: 'fresher', label: 'Fresher (0 years)' },
   { value: '0-1', label: '0–1 years' },
   { value: '1-2', label: '1–2 years' },
   { value: '2-3', label: '2–3 years' },
