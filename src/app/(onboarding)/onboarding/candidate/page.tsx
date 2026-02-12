@@ -16,6 +16,9 @@ import StepTwo from './Step2';
 import StepThree from './Step3';
 
 const Page = () => {
+  // Type assertion is necessary here because z.preprocess causes zodResolver to infer 'unknown'
+  // for the yearsOfExperience field, even though the actual output type is correctly typed.
+  // This is a known limitation when using z.preprocess with zodResolver.
   const form = useForm({
     resolver: zodResolver(candidateOnboardingSchema),
     mode: 'onTouched',

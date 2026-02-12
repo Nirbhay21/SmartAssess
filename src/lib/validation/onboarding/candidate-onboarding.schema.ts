@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+import { YEARS_OF_EXPERIENCE } from '@/constants/onboarding-form';
+
+// Extract enum values from the YEARS_OF_EXPERIENCE constant
+const YEARS_OF_EXPERIENCE_VALUES = YEARS_OF_EXPERIENCE.map((item) => item.value) as [
+  string,
+  ...string[],
+];
+
 export const candidateOnboardingSchema = z.object({
   // step 1 - basic info
   domain: z.string().min(1, 'Domain / Industry is required'),
@@ -14,7 +22,7 @@ export const candidateOnboardingSchema = z.object({
     .max(25, 'You can add up to 25 skills'),
   yearsOfExperience: z.preprocess(
     (val) => (val === '' ? undefined : val),
-    z.enum(['0', '0-1', '1-2', '2-3', '3-5', '5-7', '7-10', '10+'], {
+    z.enum(YEARS_OF_EXPERIENCE_VALUES, {
       message: 'Select years of experience',
     }),
   ),
@@ -27,4 +35,5 @@ export const candidateOnboardingSchema = z.object({
   linkedinUrl: z.url('Invalid LinkedIn profile URL').optional().or(z.literal('')),
 });
 
-export type CandidateOnboardingData = z.infer<typeof candidateOnboardingSchema>;
+// Using z.output to get the processed output type (after preprocessing)
+export type CandidateOnboardingData = z.output<typeof candidateOnboardingSchema>;
