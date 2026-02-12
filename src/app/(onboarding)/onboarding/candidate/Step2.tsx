@@ -23,7 +23,10 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
     );
   }, [selectedDomain]);
 
-  const yearsOfExperienceOptions = YEARS_OF_EXPERIENCE.map((item) => item.label);
+  const yearsOfExperienceOptions = YEARS_OF_EXPERIENCE.map((item) => ({
+    value: item.value,
+    label: item.label,
+  }));
 
   const fields: Array<{
     name: FieldPath<CandidateOnboardingData>;
@@ -101,7 +104,7 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
                 <Combobox
                   id={String(f.name)}
                   {...field}
-                  items={f.defaultOptions as string[]}
+                  items={f.defaultOptions as Option[]}
                   placeholder={f.placeholder}
                   className="font-inter w-full"
                 />

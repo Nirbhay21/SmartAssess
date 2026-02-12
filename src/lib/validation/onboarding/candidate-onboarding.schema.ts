@@ -1,5 +1,16 @@
 import { z } from 'zod';
 
+const yearsOfExperienceSchema = z.enum([
+  'fresher',
+  '0-1',
+  '1-2',
+  '2-3',
+  '3-5',
+  '5-7',
+  '7-10',
+  '10+',
+]);
+
 export const candidateOnboardingSchema = z.object({
   // step 1 - basic info
   domain: z.string().min(1, 'Domain / Industry is required'),
@@ -8,8 +19,13 @@ export const candidateOnboardingSchema = z.object({
   currentStatus: z.string().min(1, 'Current status is required'),
 
   // step 2 - skills & experience
-  topSkills: z.array(z.string().min(1)).min(1, 'At least one skill is required'),
-  yearsOfExperience: z.string().min(1, 'Years of experience is required'),
+  topSkills: z
+    .array(z.string().min(1, 'Skill is required').max(50, 'Skill must be at most 50 characters'))
+    .min(1, 'At least one skill is required')
+    .max(25, 'You can add up to 25 skills'),
+  yearsOfExperience: yearsOfExperienceSchema
+    .or(z.literal(''))
+    .refine((value) => value !== '', 'Select years of experience'),
   professionalBio: z.string().min(20, 'Professional bio must be at least 20 characters'),
 
   // step 3 - location & presence
@@ -19,4 +35,11 @@ export const candidateOnboardingSchema = z.object({
   linkedinUrl: z.url('Invalid LinkedIn profile URL').optional().or(z.literal('')),
 });
 
-export type CandidateOnboardingData = z.infer<typeof candidateOnboardingSchema>;
+export type YearsOfExperienceValue = z.infer<typeof yearsOfExperienceSchema> | '';
+
+export type CandidateOnboardingData = Omit<
+  z.infer<typeof candidateOnboardingSchema>,
+  'yearsOfExperience'
+> & {
+  yearsOfExperience: YearsOfExperienceValue;
+};
