@@ -3,10 +3,7 @@ import { z } from 'zod';
 import { YEARS_OF_EXPERIENCE } from '@/constants/onboarding-form';
 
 // Extract enum values from the YEARS_OF_EXPERIENCE constant
-const YEARS_OF_EXPERIENCE_VALUES = YEARS_OF_EXPERIENCE.map((item) => item.value) as [
-  string,
-  ...string[],
-];
+const YEARS_OF_EXPERIENCE_VALUES = YEARS_OF_EXPERIENCE.map((item) => item.value);
 
 export const candidateOnboardingSchema = z.object({
   // step 1 - basic info
