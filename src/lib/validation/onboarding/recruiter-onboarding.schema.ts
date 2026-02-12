@@ -11,8 +11,14 @@ export const recruiterOnboardingSchema = z.object({
   country: z.string().min(1, 'Country is required'),
 
   // Step 2
-  hiringDomains: z.array(z.string()).min(1, 'Select at least one domain'),
-  experienceLevelsHiring: z.array(z.string()).min(1, 'Select at least one level'),
+  hiringDomains: z
+    .array(z.string())
+    .min(1, 'Select at least one domain')
+    .max(5, 'You can select up to 5 domains'),
+  experienceLevelsHiring: z
+    .array(z.string())
+    .min(1, 'Select at least one level')
+    .max(5, 'You can select up to 5 levels'),
   companyWebsite: z.url('Invalid website URL').optional().or(z.literal('')),
 
   // Step 3 - LLM Setup

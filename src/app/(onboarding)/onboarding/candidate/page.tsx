@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 
 import { OnboardingCard } from '@/app/(onboarding)/_components/OnboardingCard';
 import { OnboardingHeader } from '@/app/(onboarding)/_components/OnboardingHeader';
@@ -16,7 +16,7 @@ import StepTwo from './Step2';
 import StepThree from './Step3';
 
 const Page = () => {
-  const form = useForm<CandidateOnboardingData>({
+  const form = useForm({
     resolver: zodResolver(candidateOnboardingSchema),
     mode: 'onTouched',
     defaultValues: {
@@ -25,14 +25,14 @@ const Page = () => {
       highestEducation: '',
       currentStatus: '',
       topSkills: [],
-      yearsOfExperience: '',
+      yearsOfExperience: undefined,
       professionalBio: '',
       country: '',
       portfolioUrl: '',
       githubUrl: '',
       linkedinUrl: '',
     },
-  });
+  }) as UseFormReturn<CandidateOnboardingData>;
 
   function onSubmit(data: CandidateOnboardingData) {
     console.log('Form submitted:', data);

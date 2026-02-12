@@ -23,14 +23,14 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
     );
   }, [selectedDomain]);
 
-  const yearsOfExperienceOptions = YEARS_OF_EXPERIENCE.map((item) => item.label);
+  const yearsOfExperienceOptions = YEARS_OF_EXPERIENCE;
 
   const fields: Array<{
     name: FieldPath<CandidateOnboardingData>;
     label: string;
     type: 'multiple' | 'combobox' | 'textarea';
     placeholder?: string;
-    defaultOptions?: Option[] | string[];
+    defaultOptions?: Option[] | ReadonlyArray<string | { value: string; label?: string }>;
     required?: boolean;
   }> = [
     {
@@ -101,7 +101,7 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
                 <Combobox
                   id={String(f.name)}
                   {...field}
-                  items={f.defaultOptions as string[]}
+                  items={f.defaultOptions as (string | { value: string; label?: string })[]}
                   placeholder={f.placeholder}
                   className="font-inter w-full"
                 />
