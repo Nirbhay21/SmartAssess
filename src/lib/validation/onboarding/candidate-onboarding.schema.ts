@@ -14,10 +14,9 @@ export const candidateOnboardingSchema = z.object({
     .max(25, 'You can add up to 25 skills'),
   yearsOfExperience: z.preprocess(
     (val) => (val === '' ? undefined : val),
-    z.enum(
-      ['fresher', '0-1', '1-2', '2-3', '3-5', '5-7', '7-10', '10+'],
-      'Select years of experience',
-    ),
+    z.enum(['0', '0-1', '1-2', '2-3', '3-5', '5-7', '7-10', '10+'], {
+      message: 'Select years of experience',
+    }),
   ),
   professionalBio: z.string().min(20, 'Professional bio must be at least 20 characters'),
 
