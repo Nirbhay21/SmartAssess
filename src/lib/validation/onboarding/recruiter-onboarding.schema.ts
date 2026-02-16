@@ -28,3 +28,6 @@ export const recruiterOnboardingSchema = z.object({
 });
 
 export type RecruiterOnboardingData = z.infer<typeof recruiterOnboardingSchema>;
+
+export const recruiterOnboardingDraftSchema = recruiterOnboardingSchema.partial();
+export type RecruiterOnboardingDraftData = z.infer<typeof recruiterOnboardingDraftSchema>;

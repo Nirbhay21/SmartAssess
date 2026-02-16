@@ -56,7 +56,8 @@ const StepOne = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
     [selectedDomain],
   );
 
-  // Reset primaryRole only when domain changes (skip initial mount)
+  // Reset primaryRole only when domain changes (skip initial mount).
+  // Preserve the value if the incoming primaryRole is valid for the new domain
   const prevDomainRef = useRef<DomainIndustry | '' | null>(null);
   useEffect(() => {
     if (prevDomainRef.current === null) {
@@ -65,7 +66,14 @@ const StepOne = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
     }
 
     if (prevDomainRef.current !== selectedDomain) {
-      form.setValue('primaryRole', '');
+      const currentPrimary = form.getValues('primaryRole');
+      const allowedRoles = selectedDomain ? PRIMARY_ROLES_BY_DOMAIN[selectedDomain] : [];
+
+      // Only clear if the current primaryRole is not among the allowed roles
+      if (!currentPrimary || !allowedRoles.includes(currentPrimary)) {
+        form.setValue('primaryRole', '');
+      }
+
       prevDomainRef.current = selectedDomain;
     }
   }, [selectedDomain, form]);

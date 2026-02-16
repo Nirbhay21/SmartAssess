@@ -2,13 +2,21 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { KeyboardEvent } from 'react';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { OnboardingCard } from '@/app/(onboarding)/_components/OnboardingCard';
 import { OnboardingHeader } from '@/app/(onboarding)/_components/OnboardingHeader';
 import {
+  useCompleteOnboardingMutation,
+  useGetOnboardingStatusQuery,
+  useUpdateOnboardingStatusMutation,
+} from '@/features/onboarding/api';
+import { useSession } from '@/lib/auth-client';
+import { getOnboardingType } from '@/lib/utils';
+import {
   CandidateOnboardingData,
+  CandidateOnboardingDraftData,
   candidateOnboardingSchema,
 } from '@/lib/validation/onboarding/candidate-onboarding.schema';
 
@@ -17,10 +25,26 @@ import StepTwo from './Step2';
 import StepThree from './Step3';
 
 const Page = () => {
-  const form = useForm<CandidateOnboardingData>({
-    resolver: zodResolver(candidateOnboardingSchema),
-    mode: 'onTouched',
-    defaultValues: {
+  const { data: session } = useSession();
+  const onboardingType = getOnboardingType(session?.user?.role);
+
+  const { data: onboarding, isLoading: isOnboardingLoading } = useGetOnboardingStatusQuery(
+    undefined,
+    {
+      skip: !session, // Skip the query if there's no session data
+      refetchOnReconnect: true, // Refetch the onboarding status when the network reconnects
+    },
+  );
+  const [
+    updateOnboardingStatus,
+    { isLoading: isUpdatingOnboardingStatus, data: updateOnboardingStatusData },
+  ] = useUpdateOnboardingStatusMutation();
+
+  const [completeOnboarding, { isLoading: isCompletingOnboarding }] =
+    useCompleteOnboardingMutation();
+
+  const formDefaultValues: CandidateOnboardingData = useMemo(() => {
+    return {
       domain: '',
       primaryRole: '',
       highestEducation: '',
@@ -32,11 +56,22 @@ const Page = () => {
       portfolioUrl: '',
       githubUrl: '',
       linkedinUrl: '',
-    },
+    };
+  }, []);
+
+  const form = useForm<CandidateOnboardingData>({
+    resolver: zodResolver(candidateOnboardingSchema),
+    mode: 'onTouched',
+    defaultValues: formDefaultValues,
   });
 
   function onSubmit(data: CandidateOnboardingData) {
-    console.log('Form submitted:', data);
+    completeOnboarding({
+      onboardingType: 'candidate',
+      currentStep: 3,
+      onboardingData: data,
+    });
+    console.log('Candidate Form submitted:', data);
   }
 
   const [step, setStep] = useState<number>(0);
@@ -71,8 +106,30 @@ const Page = () => {
     e.preventDefault();
     const valid = await form.trigger(stepFields[step]);
     if (!valid) return;
+    if (onboardingType === null) return;
 
     setStep((s) => s + 1);
+
+    const rawFormData = form.getValues();
+    const sanitizedFormData = (
+      Object.keys(rawFormData) as Array<keyof CandidateOnboardingData>
+    ).reduce((acc, key) => {
+      const value = rawFormData[key];
+
+      return {
+        ...acc,
+        [key]: !value || (Array.isArray(value) && value.length === 0) ? undefined : value,
+      };
+    }, {} as CandidateOnboardingDraftData);
+
+    console.log(sanitizedFormData);
+
+    updateOnboardingStatus({
+      currentStep: step + 1,
+      isCompleted: false,
+      onboardingType: 'candidate',
+      draft: sanitizedFormData,
+    });
   };
 
   const prevStep = () => setStep((s) => s - 1);
@@ -88,6 +145,16 @@ const Page = () => {
 
     event.preventDefault();
   };
+
+  // Reset form with draft data when onboarding data is loaded
+  useEffect(() => {
+    if (onboarding?.onboardingType === 'candidate' && onboarding.draft) {
+      form.reset({
+        ...formDefaultValues,
+        ...onboarding.draft,
+      });
+    }
+  }, [onboarding, form, formDefaultValues]);
 
   return (
     <main role="main" className="relative z-1 mx-auto w-full max-w-7xl flex-col">

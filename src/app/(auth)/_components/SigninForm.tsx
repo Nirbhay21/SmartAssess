@@ -4,11 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LockIcon, MailIcon } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import FormField from '@/components/ui/forms/FormField';
 import TextLink from '@/components/ui/typography/TextLink';
-import { authClient } from '@/lib/auth-client';
+import { useGetOnboardingStatusQuery } from '@/features/onboarding/api';
+import { authClient, useSession } from '@/lib/auth-client';
 import { EmailSigninFormData, EmailSigninSchema } from '@/lib/validation/auth/email-signin.schema';
 
 import AuthDivider from './AuthDivider';
@@ -18,6 +20,24 @@ import GoogleAndGithubProviders from './GoogleAndGithubProviders';
 
 const SigninForm = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+
+  const { data: onboarding, isLoading: isOnboardingLoading } = useGetOnboardingStatusQuery(
+    undefined,
+    {
+      skip: !session, // Skip the query if there's no session data
+      refetchOnReconnect: true, // Refetch the onboarding status when the network reconnects
+    },
+  );
+
+  useEffect(() => {
+    if (
+      (onboarding?.status === 'not_started' || onboarding?.status === 'in_progress') &&
+      session?.user?.role
+    ) {
+      router.push(`/onboarding/${session.user.role}`);
+    }
+  }, [onboarding?.status, session?.user?.role, router]);
 
   const {
     register,
@@ -38,9 +58,6 @@ const SigninForm = () => {
             type: 'server',
             message: error.error.message || 'An unexpected error occurred. Please try again.',
           });
-        },
-        onSuccess: () => {
-          router.push('/dashboard');
         },
       });
     } catch (error) {

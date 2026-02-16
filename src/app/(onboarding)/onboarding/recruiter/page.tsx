@@ -85,7 +85,6 @@ const Page = () => {
 
     const tagName = target.tagName.toLowerCase();
     if (tagName === 'textarea') return;
-
     event.preventDefault();
   };
 
