@@ -1,6 +1,11 @@
 import React from 'react';
 import { Controller, FieldPath, UseFormReturn, useWatch } from 'react-hook-form';
 
+import {
+  FieldSkeleton,
+  MultipleSelectorSkeleton,
+  TextareaSkeleton,
+} from '@/app/(onboarding)/_components/FormFieldSkeletons';
 import Combobox from '@/components/ui/combobox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
@@ -12,7 +17,13 @@ import {
 } from '@/constants/onboarding-form';
 import { CandidateOnboardingData } from '@/lib/validation/onboarding/candidate-onboarding.schema';
 
-const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => {
+const StepTwo = ({
+  form,
+  isLoading = false,
+}: {
+  form: UseFormReturn<CandidateOnboardingData>;
+  isLoading?: boolean;
+}) => {
   const selectedDomain = useWatch({ control: form.control, name: 'domain' }) as DomainIndustry | '';
   const topSkillsOptions = React.useMemo(() => {
     // If no domain is selected, return an empty array or a default set of options
@@ -77,47 +88,59 @@ const StepTwo = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
                 {f.label}
               </FieldLabel>
 
-              {f.type === 'multiple' && (
-                <MultipleSelector
-                  {...field}
-                  inputProps={{ id: String(f.name), name: String(f.name) }}
-                  value={
-                    Array.isArray(field.value)
-                      ? field.value.map((v: string) => ({ label: v, value: v }))
-                      : []
-                  }
-                  onChange={(options) => field.onChange(options.map((o) => o.value))}
-                  defaultOptions={f.defaultOptions as Option[]}
-                  placeholder={f.placeholder}
-                  badgeVariant="outline"
-                  creatable
-                  className="font-inter"
-                  emptyIndicator={
-                    <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
-                      no results found.
-                    </p>
-                  }
-                />
-              )}
+              {isLoading ? (
+                f.type === 'textarea' ? (
+                  <TextareaSkeleton />
+                ) : f.type === 'multiple' ? (
+                  <MultipleSelectorSkeleton />
+                ) : (
+                  <FieldSkeleton />
+                )
+              ) : (
+                <>
+                  {f.type === 'multiple' && (
+                    <MultipleSelector
+                      {...field}
+                      inputProps={{ id: String(f.name), name: String(f.name) }}
+                      value={
+                        Array.isArray(field.value)
+                          ? field.value.map((v: string) => ({ label: v, value: v }))
+                          : []
+                      }
+                      onChange={(options) => field.onChange(options.map((o) => o.value))}
+                      defaultOptions={f.defaultOptions as Option[]}
+                      placeholder={f.placeholder}
+                      badgeVariant="outline"
+                      creatable
+                      className="font-inter"
+                      emptyIndicator={
+                        <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
+                          no results found.
+                        </p>
+                      }
+                    />
+                  )}
 
-              {f.type === 'combobox' && (
-                <Combobox
-                  id={String(f.name)}
-                  {...field}
-                  items={f.defaultOptions as Option[]}
-                  placeholder={f.placeholder}
-                  className="font-inter w-full"
-                />
-              )}
+                  {f.type === 'combobox' && (
+                    <Combobox
+                      id={String(f.name)}
+                      {...field}
+                      items={f.defaultOptions as Option[]}
+                      placeholder={f.placeholder}
+                      className="font-inter w-full"
+                    />
+                  )}
 
-              {f.type === 'textarea' && (
-                <Textarea
-                  {...field}
-                  id={String(f.name)}
-                  maxLength={200}
-                  rows={5}
-                  className="font-inter"
-                />
+                  {f.type === 'textarea' && (
+                    <Textarea
+                      {...field}
+                      id={String(f.name)}
+                      maxLength={200}
+                      rows={5}
+                      className="font-inter"
+                    />
+                  )}
+                </>
               )}
 
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

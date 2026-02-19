@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/card';
 import { Field, FieldGroup } from '@/components/ui/field';
 
+import { FormStatus, StatusBadge } from './StatusBadge';
+
 interface OnboardingCardProps {
   step: number;
   totalSteps: number;
@@ -22,6 +24,7 @@ interface OnboardingCardProps {
   onPrev: () => void;
   onNext: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isSubmitting?: boolean;
+  status?: FormStatus;
 }
 
 const stepVariants: Variants = {
@@ -39,13 +42,20 @@ export function OnboardingCard({
   onPrev,
   onNext,
   isSubmitting,
+  status = 'idle',
 }: OnboardingCardProps) {
   return (
     <Card className="mt-8 w-full max-w-2xl overflow-hidden rounded-4xl py-10 shadow-[0px_0px_12px_0px_rgba(0,0,0,0.5)] shadow-black/8">
       <CardHeader className="px-10">
-        <CardTitle id="onboarding-form-title" className="font-montserrat text-2xl dark:text-white">
-          {title}
-        </CardTitle>
+        <div className="flex justify-between">
+          <CardTitle
+            id="onboarding-form-title"
+            className="font-montserrat text-2xl dark:text-white"
+          >
+            {title}
+          </CardTitle>
+          <StatusBadge status={status} />
+        </div>
         <CardDescription className="text-base dark:text-white/90">{description}</CardDescription>
       </CardHeader>
 

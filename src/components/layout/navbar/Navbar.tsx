@@ -53,9 +53,12 @@ const Navbar = () => {
           <div className="flex flex-1 items-center justify-end">
             <div className="mr-4 flex lg:mr-0">
               <ThemeSwitcher />
-              <button className="bg-primary font-montserrat hover:bg-primary/90 active:bg-primary/70 ml-4 cursor-pointer rounded-lg px-6 py-2 font-semibold text-white transition-[background-color] duration-150">
+              <Link
+                href="/signin"
+                className="bg-primary font-montserrat hover:bg-primary/90 active:bg-primary/70 ml-4 cursor-pointer rounded-lg px-6 py-2 font-semibold text-white transition-[background-color] duration-150"
+              >
                 Login
-              </button>
+              </Link>
             </div>
             <HamburgerMenu />
           </div>

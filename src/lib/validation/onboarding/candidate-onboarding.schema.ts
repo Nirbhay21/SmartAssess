@@ -37,6 +37,9 @@ export const candidateOnboardingSchema = z.object({
 
 export type YearsOfExperienceValue = z.infer<typeof yearsOfExperienceSchema> | '';
 
+export const candidateOnboardingDraftSchema = candidateOnboardingSchema.partial();
+export type CandidateOnboardingDraftData = z.infer<typeof candidateOnboardingDraftSchema>;
+
 export type CandidateOnboardingData = Omit<
   z.infer<typeof candidateOnboardingSchema>,
   'yearsOfExperience'

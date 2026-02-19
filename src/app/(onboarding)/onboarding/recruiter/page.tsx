@@ -1,12 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import type { KeyboardEvent } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { OnboardingCard } from '@/app/(onboarding)/_components/OnboardingCard';
 import { OnboardingHeader } from '@/app/(onboarding)/_components/OnboardingHeader';
+import { useCompleteOnboardingMutation } from '@/features/onboarding/api';
 import {
   RecruiterOnboardingData,
   recruiterOnboardingSchema,
@@ -17,6 +19,10 @@ import StepTwo from './Step2';
 import StepThree from './Step3';
 
 const Page = () => {
+  const router = useRouter();
+  const [completeOnboarding, { isLoading: isCompleting, isSuccess: isCompleteSuccess }] =
+    useCompleteOnboardingMutation();
+
   const form = useForm<RecruiterOnboardingData>({
     resolver: zodResolver(recruiterOnboardingSchema),
     mode: 'onTouched',
@@ -34,12 +40,22 @@ const Page = () => {
     },
   });
 
-  function onSubmit(data: RecruiterOnboardingData) {
-    console.log('Recruiter Form submitted:', data);
-    // Here you would typically make an API call to save the data
-  }
-
   const [step, setStep] = useState<number>(0);
+
+  useEffect(() => {
+    if (isCompleteSuccess) {
+      router.push('/onboarding/recruiter/completed');
+    }
+  }, [isCompleteSuccess, router]);
+
+  async function onSubmit(data: RecruiterOnboardingData) {
+    console.log('Recruiter Form submitted:', data);
+    // try {
+    //   await completeOnboarding(data).unwrap();
+    // } catch (error) {
+    //   console.error('Failed to complete onboarding:', error);
+    // }
+  }
 
   const steps = [
     {
@@ -85,7 +101,6 @@ const Page = () => {
 
     const tagName = target.tagName.toLowerCase();
     if (tagName === 'textarea') return;
-
     event.preventDefault();
   };
 
@@ -107,7 +122,7 @@ const Page = () => {
               description={steps[step].description}
               onPrev={prevStep}
               onNext={nextStep}
-              isSubmitting={form.formState.isSubmitting}
+              isSubmitting={form.formState.isSubmitting || isCompleting}
             >
               {steps[step].component}
             </OnboardingCard>
