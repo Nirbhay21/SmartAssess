@@ -39,6 +39,12 @@ const SigninForm = () => {
     }
   }, [onboarding?.status, session?.user?.role, router]);
 
+  useEffect(() => {
+    if (onboarding?.status === 'completed' && session?.user?.role) {
+      router.push('/dashboard');
+    }
+  });
+
   const {
     register,
     handleSubmit,

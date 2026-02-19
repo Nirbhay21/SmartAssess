@@ -1,10 +1,10 @@
 import { inferAdditionalFields } from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
 
-import { publicEnv } from './publicEnv';
+const baseAuthUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth`;
 
 export const authClient = createAuthClient({
-  baseURL: publicEnv.NEXT_PUBLIC_AUTH_BASE_URL, // The base URL of auth server - (backend url)
+  baseURL: baseAuthUrl,
   plugins: [
     inferAdditionalFields({
       user: {

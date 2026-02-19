@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { Controller, FieldPath, UseFormReturn, useWatch } from 'react-hook-form';
 
+import { FieldSkeleton } from '@/app/(onboarding)/_components/FormFieldSkeletons';
 import Combobox from '@/components/ui/combobox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import {
@@ -46,7 +47,13 @@ const FIELD_CONFIG: Array<{
   },
 ];
 
-const StepOne = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => {
+const StepOne = ({
+  form,
+  isLoading = false,
+}: {
+  form: UseFormReturn<CandidateOnboardingData>;
+  isLoading?: boolean;
+}) => {
   // Watch domain to update dependent options
   const selectedDomain = useWatch({ control: form.control, name: 'domain' }) as DomainIndustry | '';
 
@@ -114,13 +121,17 @@ const StepOne = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => 
                   {label}
                 </FieldLabel>
 
-                <Combobox
-                  id={String(name)}
-                  {...field}
-                  items={items}
-                  placeholder={placeholder}
-                  className="font-inter w-full"
-                />
+                {isLoading ? (
+                  <FieldSkeleton />
+                ) : (
+                  <Combobox
+                    id={String(name)}
+                    {...field}
+                    items={items}
+                    placeholder={placeholder}
+                    className="font-inter w-full"
+                  />
+                )}
 
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>

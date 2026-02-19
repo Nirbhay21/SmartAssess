@@ -1,13 +1,14 @@
 import { z } from 'zod';
 
-import { envSchema } from './validation/env.schema';
+import { serverEnvSchema } from './validation/server.env.schema';
 
-const parsedEnv = envSchema.safeParse(process.env);
+// Validate server-only environment (run on server startup)
+const parsedEnv = serverEnvSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {
-  console.log('❌ Invalid environment variables:');
-  console.log(z.flattenError(parsedEnv.error).fieldErrors);
-  throw new Error(`Invalid environment configuration`);
+  console.error('❌ Invalid server environment variables:');
+  console.error(z.flattenError(parsedEnv.error).fieldErrors);
+  throw new Error('Invalid server environment configuration');
 }
 
 export const env = parsedEnv.data;

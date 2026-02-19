@@ -8,6 +8,24 @@ html {
   color-scheme: light dark;
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 :root {
   /* =========================================================
     Brand tokens
@@ -291,6 +309,9 @@ html {
   --breakpoint-xxs: 23.4375rem;
   --breakpoint-xs: 28.75rem;
   --breakpoint-xsm: 35rem;
+
+  --animate-shimmer: shimmer 2.5s linear infinite;
+  --animate-skeleton-shimmer: skeleton-shimmer 1.2s linear infinite;
 }
 
 /* =========================================================

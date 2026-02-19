@@ -1,5 +1,6 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
 
+import { FieldSkeleton } from '@/app/(onboarding)/_components/FormFieldSkeletons';
 import Combobox from '@/components/ui/combobox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
@@ -27,7 +28,13 @@ const URL_FIELDS = [
   },
 ] as const;
 
-const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) => {
+const StepThree = ({
+  form,
+  isLoading = false,
+}: {
+  form: UseFormReturn<CandidateOnboardingData>;
+  isLoading?: boolean;
+}) => {
   const countryOptions = COUNTRY_OPTIONS.map((country) => country.label);
 
   return (
@@ -41,13 +48,17 @@ const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) =
               Country
             </FieldLabel>
 
-            <Combobox
-              id="country"
-              {...field}
-              items={countryOptions}
-              placeholder="Select your country"
-              className="font-inter w-full"
-            />
+            {isLoading ? (
+              <FieldSkeleton />
+            ) : (
+              <Combobox
+                id="country"
+                {...field}
+                items={countryOptions}
+                placeholder="Select your country"
+                className="font-inter w-full"
+              />
+            )}
 
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>
@@ -64,13 +75,17 @@ const StepThree = ({ form }: { form: UseFormReturn<CandidateOnboardingData> }) =
                 {label}
               </FieldLabel>
 
-              <Input
-                {...field}
-                id={name}
-                autoComplete={autoComplete}
-                placeholder={placeholder}
-                className="font-inter"
-              />
+              {isLoading ? (
+                <FieldSkeleton />
+              ) : (
+                <Input
+                  {...field}
+                  id={name}
+                  autoComplete={autoComplete}
+                  placeholder={placeholder}
+                  className="font-inter"
+                />
+              )}
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
