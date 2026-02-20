@@ -2,3 +2,4 @@
 declare module '*.css';
 
 declare type UserType = 'recruiter' | 'candidate';
+declare type UserRole = UserType;
