@@ -7,9 +7,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { store } from '@/app/store';
 import FormField from '@/components/ui/forms/FormField';
 import TextLink from '@/components/ui/typography/TextLink';
-import { useGetOnboardingStatusQuery } from '@/features/onboarding/api';
+import { authApi } from '@/features/auth/api';
 import { authClient, useSession } from '@/lib/auth-client';
 import { EmailSigninFormData, EmailSigninSchema } from '@/lib/validation/auth/email-signin.schema';
 
@@ -22,25 +23,12 @@ const SigninForm = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const { data: onboarding } = useGetOnboardingStatusQuery(undefined, {
-    skip: !session, // Skip the query if there's no session data
-    refetchOnReconnect: true, // Refetch the onboarding status when the network reconnects
-  });
-
   useEffect(() => {
-    if (
-      (onboarding?.status === 'not_started' || onboarding?.status === 'in_progress') &&
-      session?.user?.role
-    ) {
-      router.push(`/${session.user.role}/onboarding`);
+    if (session) {
+      // let middleware (server) decide final destination based on app_meta
+      router.replace('/signin');
     }
-  }, [onboarding?.status, session?.user?.role, router]);
-
-  useEffect(() => {
-    if (onboarding?.status === 'completed' && session?.user?.role) {
-      router.push(`/${session.user.role}/dashboard`);
-    }
-  });
+  }, [session, router]);
 
   const {
     register,
@@ -63,6 +51,14 @@ const SigninForm = () => {
           });
         },
       });
+
+      // Ensure backend sets `app_meta` for this session so middleware can make routing
+      // decisions immediately after sign-in. Use RTK Query's `getMe` as the fast path.
+      try {
+        store.dispatch(authApi.endpoints.getMe.initiate());
+      } catch {
+        /* best-effort */
+      }
     } catch (error) {
       setError('root', {
         type: 'server',

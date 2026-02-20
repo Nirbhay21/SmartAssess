@@ -1,9 +1,8 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import type { KeyboardEvent } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { OnboardingCard } from '@/app/(onboarding)/_components/OnboardingCard';
@@ -18,9 +17,7 @@ import {
 } from '@/lib/validation/onboarding/recruiter-onboarding.schema';
 
 const RecruiterOnboardingClient = () => {
-  const router = useRouter();
-  const [, { isLoading: isCompleting, isSuccess: isCompleteSuccess }] =
-    useCompleteOnboardingMutation();
+  const [, { isLoading: isCompleting }] = useCompleteOnboardingMutation();
 
   const form = useForm<RecruiterOnboardingData>({
     resolver: zodResolver(recruiterOnboardingSchema),
@@ -40,12 +37,6 @@ const RecruiterOnboardingClient = () => {
   });
 
   const [step, setStep] = useState<number>(0);
-
-  useEffect(() => {
-    if (isCompleteSuccess) {
-      router.push('/recruiter/onboarding/success');
-    }
-  }, [isCompleteSuccess, router]);
 
   async function onSubmit(data: RecruiterOnboardingData) {
     console.log('Recruiter Form submitted:', data);

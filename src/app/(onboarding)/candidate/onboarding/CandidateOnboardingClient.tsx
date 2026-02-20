@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -44,9 +43,7 @@ const CandidateOnboardingClient = () => {
     { isLoading: isUpdatingOnboardingStatus, isSuccess: isUpdateSuccess },
   ] = useUpdateOnboardingStatusMutation();
 
-  const [completeOnboarding, { isLoading: isCompleting, isSuccess: isCompleteOnboardingSuccess }] =
-    useCompleteOnboardingMutation();
-  const router = useRouter();
+  const [completeOnboarding, { isLoading: isCompleting }] = useCompleteOnboardingMutation();
 
   // Track when to show "saved" status
   const [showSaved, setShowSaved] = useState(false);
@@ -72,20 +69,6 @@ const CandidateOnboardingClient = () => {
       };
     }
   }, [isUpdateSuccess]);
-
-  // Redirect to nice animated completion page once onboarding completes
-  useEffect(() => {
-    if (isCompleteOnboardingSuccess) {
-      router.push('/candidate/onboarding/success');
-    }
-  }, [isCompleteOnboardingSuccess, router]);
-
-  // Redirect to role-specific dashboard if onboarding is already completed
-  useEffect(() => {
-    if (onboarding?.status === 'completed' && onboarding.onboardingType) {
-      router.push(`/${onboarding.onboardingType}/dashboard`);
-    }
-  }, [onboarding?.status, onboarding?.onboardingType, router]);
 
   const formDefaultValues: CandidateOnboardingData = useMemo(() => {
     return {
@@ -116,7 +99,6 @@ const CandidateOnboardingClient = () => {
         currentStep: 3,
         onboardingData: data,
       }).unwrap();
-      // success handled by mutation -> modal + redirect
     } catch (err) {
       console.error('Complete onboarding failed', err);
     }

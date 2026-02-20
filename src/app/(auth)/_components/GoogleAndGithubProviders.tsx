@@ -4,8 +4,10 @@ import * as motion from 'motion/react-client';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
+import { store } from '@/app/store';
 import GithubIcon from '@/components/ui/icons/GithubIcon';
 import GoogleIcon from '@/components/ui/icons/GoogleIcon';
+import { authApi } from '@/features/auth/api';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
@@ -138,8 +140,16 @@ const GoogleAndGithubProviders = (props: GoogleAndGithubProvidersProps) => {
         const message = error instanceof Error ? error.message : null;
         setProviderError(message || 'An unexpected error occurred. Please try again.');
       },
-      onSuccess: () => {
-        router.push('/dashboard');
+      onSuccess: async () => {
+        // Ensure backend sets `app_meta` so middleware can make routing decisions.
+        try {
+          store.dispatch(authApi.endpoints.getMe.initiate());
+        } catch {
+          /* best-effort */
+        }
+
+        // defer final redirect to middleware (app_meta)
+        router.replace('/signin');
       },
     } as const;
 
