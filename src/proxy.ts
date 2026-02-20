@@ -47,12 +47,11 @@ export async function proxy(req: NextRequest) {
     return response;
   }
 
-  // Only read and verify `app_meta` when a session exists
   const meta = req.cookies.get('app_meta')?.value;
   const [payload, signature] = meta?.split('.') || [];
 
   if (!payload || !signature) {
-    const response = NextResponse.redirect(new URL('/signin', req.url));
+    const response = NextResponse.next();
     response.cookies.delete('app_meta');
     return response;
   }
