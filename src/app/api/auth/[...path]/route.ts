@@ -6,16 +6,13 @@ const BACKEND_URL = env.BACKEND_URL;
 
 async function proxy(req: NextRequest, params: Promise<{ path: string[] }>) {
   const path = (await params).path.join('/');
-  const cookie = req.headers.get('cookie');
   const url = new URL(req.url);
   const search = url.search;
 
+  // simply forward the incoming headers verbatim; they already include cookie
   const res = await fetch(`${BACKEND_URL}/auth/${path}${search}`, {
     method: req.method,
-    headers: {
-      'Content-Type': req.headers.get('Content-Type') || 'application/json',
-      ...(cookie ? { cookie } : {}),
-    },
+    headers: req.headers,
     body: req.method !== 'GET' && req.method !== 'HEAD' ? await req.text() : undefined,
     credentials: 'include',
   });
