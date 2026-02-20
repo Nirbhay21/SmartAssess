@@ -22,26 +22,23 @@ const SigninForm = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const { data: onboarding, isLoading: isOnboardingLoading } = useGetOnboardingStatusQuery(
-    undefined,
-    {
-      skip: !session, // Skip the query if there's no session data
-      refetchOnReconnect: true, // Refetch the onboarding status when the network reconnects
-    },
-  );
+  const { data: onboarding } = useGetOnboardingStatusQuery(undefined, {
+    skip: !session, // Skip the query if there's no session data
+    refetchOnReconnect: true, // Refetch the onboarding status when the network reconnects
+  });
 
   useEffect(() => {
     if (
       (onboarding?.status === 'not_started' || onboarding?.status === 'in_progress') &&
       session?.user?.role
     ) {
-      router.push(`/onboarding/${session.user.role}`);
+      router.push(`/${session.user.role}/onboarding`);
     }
   }, [onboarding?.status, session?.user?.role, router]);
 
   useEffect(() => {
     if (onboarding?.status === 'completed' && session?.user?.role) {
-      router.push('/dashboard');
+      router.push(`/${session.user.role}/dashboard`);
     }
   });
 

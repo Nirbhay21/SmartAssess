@@ -8,19 +8,18 @@ import { useForm } from 'react-hook-form';
 
 import { OnboardingCard } from '@/app/(onboarding)/_components/OnboardingCard';
 import { OnboardingHeader } from '@/app/(onboarding)/_components/OnboardingHeader';
+import StepOne from '@/app/(onboarding)/recruiter/onboarding/Step1';
+import StepTwo from '@/app/(onboarding)/recruiter/onboarding/Step2';
+import StepThree from '@/app/(onboarding)/recruiter/onboarding/Step3';
 import { useCompleteOnboardingMutation } from '@/features/onboarding/api';
 import {
   RecruiterOnboardingData,
   recruiterOnboardingSchema,
 } from '@/lib/validation/onboarding/recruiter-onboarding.schema';
 
-import StepOne from './Step1';
-import StepTwo from './Step2';
-import StepThree from './Step3';
-
-const Page = () => {
+const RecruiterOnboardingClient = () => {
   const router = useRouter();
-  const [completeOnboarding, { isLoading: isCompleting, isSuccess: isCompleteSuccess }] =
+  const [, { isLoading: isCompleting, isSuccess: isCompleteSuccess }] =
     useCompleteOnboardingMutation();
 
   const form = useForm<RecruiterOnboardingData>({
@@ -44,7 +43,7 @@ const Page = () => {
 
   useEffect(() => {
     if (isCompleteSuccess) {
-      router.push('/onboarding/recruiter/completed');
+      router.push('/recruiter/onboarding/success');
     }
   }, [isCompleteSuccess, router]);
 
@@ -133,4 +132,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default RecruiterOnboardingClient;
