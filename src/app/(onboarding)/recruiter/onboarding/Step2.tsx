@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Controller, FieldPath, UseFormReturn } from 'react-hook-form';
 
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';

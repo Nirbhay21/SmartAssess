@@ -9,6 +9,9 @@ import { useForm } from 'react-hook-form';
 import { OnboardingCard } from '@/app/(onboarding)/_components/OnboardingCard';
 import { OnboardingHeader } from '@/app/(onboarding)/_components/OnboardingHeader';
 import { FormStatus } from '@/app/(onboarding)/_components/StatusBadge';
+import StepOne from '@/app/(onboarding)/candidate/onboarding/Step1';
+import StepTwo from '@/app/(onboarding)/candidate/onboarding/Step2';
+import StepThree from '@/app/(onboarding)/candidate/onboarding/Step3';
 import {
   useCompleteOnboardingMutation,
   useGetOnboardingStatusQuery,
@@ -21,10 +24,6 @@ import {
   CandidateOnboardingDraftData,
   candidateOnboardingSchema,
 } from '@/lib/validation/onboarding/candidate-onboarding.schema';
-
-import StepOne from './Step1';
-import StepTwo from './Step2';
-import StepThree from './Step3';
 
 const CandidateOnboardingClient = () => {
   const { data: session, isPending: isSessionPending } = useSession();
@@ -47,8 +46,6 @@ const CandidateOnboardingClient = () => {
 
   const [completeOnboarding, { isLoading: isCompleting, isSuccess: isCompleteOnboardingSuccess }] =
     useCompleteOnboardingMutation();
-
-  const [showCompleteModal, setShowCompleteModal] = useState(false);
   const router = useRouter();
 
   // Track when to show "saved" status
@@ -79,16 +76,16 @@ const CandidateOnboardingClient = () => {
   // Redirect to nice animated completion page once onboarding completes
   useEffect(() => {
     if (isCompleteOnboardingSuccess) {
-      router.push('/onboarding/candidate/completed');
+      router.push('/candidate/onboarding/success');
     }
   }, [isCompleteOnboardingSuccess, router]);
 
-  // Redirect to dashboard if onboarding is already completed
+  // Redirect to role-specific dashboard if onboarding is already completed
   useEffect(() => {
-    if (onboarding?.status === 'completed') {
-      router.push('/candidate/dashboard');
+    if (onboarding?.status === 'completed' && onboarding.onboardingType) {
+      router.push(`/${onboarding.onboardingType}/dashboard`);
     }
-  }, [onboarding?.status, router]);
+  }, [onboarding?.status, onboarding?.onboardingType, router]);
 
   const formDefaultValues: CandidateOnboardingData = useMemo(() => {
     return {

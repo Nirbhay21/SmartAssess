@@ -1,4 +1,3 @@
-import React from 'react';
 import { Controller, FieldPath, UseFormReturn } from 'react-hook-form';
 
 import Combobox from '@/components/ui/combobox';
