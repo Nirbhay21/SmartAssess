@@ -1,3 +1,4 @@
+import { authApi } from '@/features/auth/api';
 import { baseApi } from '@/services/api/baseApi';
 
 import {
@@ -32,6 +33,38 @@ export const onboardingApi = baseApi.injectEndpoints({
         body,
       }),
       invalidatesTags: ['OnboardingStatus'],
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          // Trigger RTK Query to refetch /api/me and wait for it to reflect completion
+          const maxAttempts = 6;
+          const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+          let confirmed = false;
+          for (let i = 0; i < maxAttempts; i++) {
+            try {
+              const result = await dispatch(
+                // forceRefetch to ensure fresh data from the server
+                authApi.endpoints.getMe.initiate(undefined, { forceRefetch: true }),
+              ).unwrap();
+              if (result.onboardingStatus === 'completed') {
+                confirmed = true;
+                break;
+              }
+            } catch {
+              // ignore and retry
+            }
+            await delay(500);
+          }
+          // final non-blocking fetch as a fallback
+          if (!confirmed) {
+            try {
+              dispatch(authApi.endpoints.getMe.initiate(undefined, { forceRefetch: true }));
+            } catch {}
+          }
+        } catch (e) {
+          // ignore
+        }
+      },
     }),
   }),
 });

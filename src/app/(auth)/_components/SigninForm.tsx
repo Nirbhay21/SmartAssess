@@ -4,14 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LockIcon, MailIcon } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { store } from '@/app/store';
 import FormField from '@/components/ui/forms/FormField';
 import TextLink from '@/components/ui/typography/TextLink';
 import { authApi } from '@/features/auth/api';
-import { authClient, useSession } from '@/lib/auth-client';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { authClient } from '@/lib/auth-client';
 import { EmailSigninFormData, EmailSigninSchema } from '@/lib/validation/auth/email-signin.schema';
 
 import AuthDivider from './AuthDivider';
@@ -21,14 +20,7 @@ import GoogleAndGithubProviders from './GoogleAndGithubProviders';
 
 const SigninForm = () => {
   const router = useRouter();
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if (session) {
-      // let middleware (server) decide final destination based on app_meta
-      router.replace('/signin');
-    }
-  }, [session, router]);
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -44,6 +36,12 @@ const SigninForm = () => {
   const signin = async (data: EmailSigninFormData) => {
     try {
       await authClient.signIn.email(data, {
+        onSuccess: async () => {
+          // fetch /me to prime state; callback page will also fetch
+          dispatch(authApi.endpoints.getMe.initiate()).catch(() => {});
+          // navigate to neutral callback which contains routing logic
+          router.replace('/auth/callback');
+        },
         onError: (error) => {
           setError('root', {
             type: 'server',
@@ -51,14 +49,6 @@ const SigninForm = () => {
           });
         },
       });
-
-      // Ensure backend sets `app_meta` for this session so middleware can make routing
-      // decisions immediately after sign-in. Use RTK Query's `getMe` as the fast path.
-      try {
-        store.dispatch(authApi.endpoints.getMe.initiate());
-      } catch {
-        /* best-effort */
-      }
     } catch (error) {
       setError('root', {
         type: 'server',

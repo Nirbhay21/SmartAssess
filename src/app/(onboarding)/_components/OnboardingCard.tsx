@@ -90,9 +90,10 @@ export function OnboardingCard({
               <Button
                 type="button"
                 onClick={onNext}
+                disabled={isSubmitting}
                 className="font-inter px-8 font-semibold text-white"
               >
-                Next
+                {isSubmitting ? 'Saving...' : 'Next'}
               </Button>
             ) : (
               <Button

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Controller, FieldPath, UseFormReturn } from 'react-hook-form';
 
+import { FieldSkeleton } from '@/app/(onboarding)/_components/FormFieldSkeletons';
 import Combobox from '@/components/ui/combobox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
@@ -15,7 +16,13 @@ const LLM_PROVIDERS = [
   'Azure OpenAI',
 ];
 
-const StepThree = ({ form }: { form: UseFormReturn<RecruiterOnboardingData> }) => {
+const StepThree = ({
+  form,
+  isLoading = false,
+}: {
+  form: UseFormReturn<RecruiterOnboardingData>;
+  isLoading?: boolean;
+}) => {
   const FIELDS: Array<{
     name: FieldPath<RecruiterOnboardingData>;
     label: string;
@@ -72,27 +79,33 @@ const StepThree = ({ form }: { form: UseFormReturn<RecruiterOnboardingData> }) =
                 {f.label}
               </FieldLabel>
 
-              {f.type === 'combobox' && (
-                <Combobox
-                  id={String(f.name)}
-                  {...field}
-                  items={f.items || []}
-                  placeholder={f.placeholder}
-                  className="font-inter w-full"
-                />
-              )}
-
-              {f.type === 'input' && (
+              {isLoading ? (
+                <FieldSkeleton />
+              ) : (
                 <>
-                  <Input
-                    {...field}
-                    id={String(f.name)}
-                    placeholder={f.placeholder}
-                    className="font-inter"
-                    {...f.inputProps}
-                  />
-                  {f.helperText && (
-                    <p className="text-muted-foreground mt-1 text-xs">{f.helperText}</p>
+                  {f.type === 'combobox' && (
+                    <Combobox
+                      id={String(f.name)}
+                      {...field}
+                      items={f.items || []}
+                      placeholder={f.placeholder}
+                      className="font-inter w-full"
+                    />
+                  )}
+
+                  {f.type === 'input' && (
+                    <>
+                      <Input
+                        {...field}
+                        id={String(f.name)}
+                        placeholder={f.placeholder}
+                        className="font-inter"
+                        {...f.inputProps}
+                      />
+                      {f.helperText && (
+                        <p className="text-muted-foreground mt-1 text-xs">{f.helperText}</p>
+                      )}
+                    </>
                   )}
                 </>
               )}

@@ -1,5 +1,6 @@
 import { Controller, FieldPath, UseFormReturn } from 'react-hook-form';
 
+import { FieldSkeleton } from '@/app/(onboarding)/_components/FormFieldSkeletons';
 import Combobox from '@/components/ui/combobox';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
@@ -10,7 +11,13 @@ import {
 } from '@/constants/onboarding-form';
 import { RecruiterOnboardingData } from '@/lib/validation/onboarding/recruiter-onboarding.schema';
 
-const StepOne = ({ form }: { form: UseFormReturn<RecruiterOnboardingData> }) => {
+const StepOne = ({
+  form,
+  isLoading = false,
+}: {
+  form: UseFormReturn<RecruiterOnboardingData>;
+  isLoading?: boolean;
+}) => {
   const countryOptions = COUNTRY_OPTIONS.map((country) => country.label);
 
   const FIELDS: Array<{
@@ -79,26 +86,32 @@ const StepOne = ({ form }: { form: UseFormReturn<RecruiterOnboardingData> }) => 
                 {f.label}
               </FieldLabel>
 
-              {f.type === 'input' && (
-                <Input
-                  {...field}
-                  id={String(f.name)}
-                  placeholder={f.placeholder}
-                  autoComplete={f.autoComplete}
-                  className="font-inter"
-                />
-              )}
+              {isLoading ? (
+                <FieldSkeleton />
+              ) : (
+                <>
+                  {f.type === 'input' && (
+                    <Input
+                      {...field}
+                      id={String(f.name)}
+                      placeholder={f.placeholder}
+                      autoComplete={f.autoComplete}
+                      className="font-inter"
+                    />
+                  )}
 
-              {f.type === 'combobox' && (
-                <Combobox
-                  id={String(f.name)}
-                  {...field}
-                  items={f.items || []}
-                  placeholder={f.placeholder}
-                  searchPlaceholder={f.searchPlaceholder}
-                  ariaLabel={f.ariaLabel}
-                  className={f.className ?? 'font-inter w-full'}
-                />
+                  {f.type === 'combobox' && (
+                    <Combobox
+                      id={String(f.name)}
+                      {...field}
+                      items={f.items || []}
+                      placeholder={f.placeholder}
+                      searchPlaceholder={f.searchPlaceholder}
+                      ariaLabel={f.ariaLabel}
+                      className={f.className ?? 'font-inter w-full'}
+                    />
+                  )}
+                </>
               )}
 
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}

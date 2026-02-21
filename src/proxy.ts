@@ -105,7 +105,12 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL(`/${appMeta.r}/onboarding`, req.url));
   }
 
-  if ((isCandidateOnboarding || isRecruiterOnboarding) && appMeta.oc) {
+  // Allow the explicit onboarding "success" page to be shown even after the
+  // backend marks onboarding complete. The middleware should redirect other
+  // onboarding routes to the dashboard when `app_meta.oc` is true.
+  const isOnboardingSuccess = pathname.endsWith('/success');
+
+  if ((isCandidateOnboarding || isRecruiterOnboarding) && appMeta.oc && !isOnboardingSuccess) {
     return NextResponse.redirect(new URL(`/${appMeta.r}/dashboard`, req.url));
   }
 
@@ -114,6 +119,7 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/auth/callback',
     '/signin',
     '/candidate/dashboard/:path*',
     '/recruiter/dashboard/:path*',
