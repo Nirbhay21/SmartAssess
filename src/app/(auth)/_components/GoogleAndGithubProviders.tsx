@@ -1,13 +1,10 @@
 import { ClientFetchOption, SocialProvider } from 'better-auth';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import { store } from '@/app/store';
 import GithubIcon from '@/components/ui/icons/GithubIcon';
 import GoogleIcon from '@/components/ui/icons/GoogleIcon';
-import { authApi } from '@/features/auth/api';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
@@ -17,9 +14,11 @@ type AllowedProviders = Extract<SocialProvider, 'google' | 'github'>;
 type SocialSignInPayload =
   | {
       provider: AllowedProviders;
+      callbackURL: string;
     }
   | {
       provider: AllowedProviders;
+      callbackURL: string;
       additionalData: {
         role: UserType;
         termsAccepted: boolean;
@@ -92,7 +91,6 @@ const GoogleAndGithubProviders = (props: GoogleAndGithubProvidersProps) => {
   const { className, providerFor } = props;
   const [loadingProvider, setLoadingProvider] = useState<AllowedProviders | null>(null);
   const [providerError, setProviderError] = useState<string | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (!providerError) return;
@@ -119,16 +117,24 @@ const GoogleAndGithubProviders = (props: GoogleAndGithubProvidersProps) => {
     }
 
     // Build payload (signup includes additional data)
+    // redirect to the provider; the backend will 302 the browser
+    // automatically. once the user returns to `/auth/callback` the new page
+    // will fetch /me and perform the redirect to dashboard/onboarding.
+    const callbackURL = `${window.location.origin}/auth/callback`;
     const payload: SocialSignInPayload =
       providerFor === 'signup' && 'userType' in props
         ? {
             provider,
+            callbackURL,
             additionalData: {
               role: props.userType,
               termsAccepted: props.termsAccepted,
             },
           }
-        : { provider };
+        : {
+            provider,
+            callbackURL,
+          };
 
     const hooks: ClientFetchOption = {
       onRequest: () => {
@@ -139,17 +145,6 @@ const GoogleAndGithubProviders = (props: GoogleAndGithubProvidersProps) => {
         setLoadingProvider(null);
         const message = error instanceof Error ? error.message : null;
         setProviderError(message || 'An unexpected error occurred. Please try again.');
-      },
-      onSuccess: async () => {
-        // Ensure backend sets `app_meta` so middleware can make routing decisions.
-        try {
-          store.dispatch(authApi.endpoints.getMe.initiate());
-        } catch {
-          /* best-effort */
-        }
-
-        // defer final redirect to middleware (app_meta)
-        router.replace('/signin');
       },
     } as const;
 

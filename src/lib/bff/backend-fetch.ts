@@ -3,11 +3,7 @@ import { NextRequest } from 'next/server';
 import { env } from '../env';
 import { BFFError } from './errors';
 
-export async function backendFetch<T>(
-  req: NextRequest,
-  path: string,
-  init?: RequestInit,
-): Promise<T> {
+export async function backendFetch(req: NextRequest, path: string, init?: RequestInit) {
   const cookie = req.headers.get('cookie');
 
   const response = await fetch(`${env.BACKEND_URL}${path}`, {
@@ -25,5 +21,8 @@ export async function backendFetch<T>(
     throw new BFFError(errorBody?.message || 'Backend Error', response.status);
   }
 
-  return response.json();
+  return new Response(response.body, {
+    status: response.status,
+    headers: response.headers,
+  }).json();
 }

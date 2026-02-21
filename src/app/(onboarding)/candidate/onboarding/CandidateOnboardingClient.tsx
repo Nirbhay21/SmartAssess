@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import type { KeyboardEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +26,7 @@ import {
 } from '@/lib/validation/onboarding/candidate-onboarding.schema';
 
 const CandidateOnboardingClient = () => {
+  const router = useRouter();
   const { data: session, isPending: isSessionPending } = useSession();
   const onboardingType = getOnboardingType(session?.user?.role);
 
@@ -36,8 +38,20 @@ const CandidateOnboardingClient = () => {
     },
   );
 
-  // Combined loading state: show skeleton while session is loading OR onboarding data is loading
-  const isLoading = isSessionPending || isOnboardingLoading;
+  // Track whether we've initialized local state from the server-provided onboarding
+  const [hasInitialized, setHasInitialized] = useState(false);
+
+  const isFetching = isSessionPending || isOnboardingLoading;
+  // Use a derived state to ensure we show a loading indicator until hydration is complete
+  const isLoading = useMemo(() => {
+    // If we have already initialized, we are NO LONGER loading, regardless of background fetches
+    if (hasInitialized) return false;
+    // Otherwise, we are loading if we are fetching or waiting to initialize data
+    if (isFetching) return true;
+    if (onboarding && !hasInitialized) return true;
+    return false;
+  }, [isFetching, onboarding, hasInitialized]);
+
   const [
     updateOnboardingStatus,
     { isLoading: isUpdatingOnboardingStatus, isSuccess: isUpdateSuccess },
@@ -68,7 +82,7 @@ const CandidateOnboardingClient = () => {
         clearTimeout(hideTimer);
       };
     }
-  }, [isUpdateSuccess]);
+  }, [isUpdateSuccess, setShowSaved]);
 
   const formDefaultValues: CandidateOnboardingData = useMemo(() => {
     return {
@@ -99,6 +113,10 @@ const CandidateOnboardingClient = () => {
         currentStep: 3,
         onboardingData: data,
       }).unwrap();
+
+      // session/app_meta refresh handled by RTK Query in onQueryStarted; manual fetch removed
+
+      router.push('/candidate/onboarding/success');
     } catch (err) {
       console.error('Complete onboarding failed', err);
     }
@@ -106,31 +124,37 @@ const CandidateOnboardingClient = () => {
 
   const [step, setStep] = useState<number>(0);
 
-  const steps = [
-    {
-      title: 'Professional Identity',
-      description: 'We use this to match you with the right job markets and salary bands.',
-      component: <StepOne form={form} isLoading={isLoading} />,
-    },
-    {
-      title: 'Expertise & Bio',
-      description:
-        'Recruiters filter candidates by skills and experience. Your bio helps you stand out.',
-      component: <StepTwo form={form} isLoading={isLoading} />,
-    },
-    {
-      title: 'Location & Presence',
-      description:
-        'Location matching helps with visa sponsorship/relocation. Social links build credibility.',
-      component: <StepThree form={form} isLoading={isLoading} />,
-    },
-  ];
+  const steps = useMemo(
+    () => [
+      {
+        title: 'Professional Identity',
+        description: 'We use this to match you with the right job markets and salary bands.',
+        component: <StepOne form={form} isLoading={isLoading} />,
+      },
+      {
+        title: 'Expertise & Bio',
+        description:
+          'Recruiters filter candidates by skills and experience. Your bio helps you stand out.',
+        component: <StepTwo form={form} isLoading={isLoading} />,
+      },
+      {
+        title: 'Location & Presence',
+        description:
+          'Location matching helps with visa sponsorship/relocation. Social links build credibility.',
+        component: <StepThree form={form} isLoading={isLoading} />,
+      },
+    ],
+    [form, isLoading],
+  );
 
-  const stepFields: (keyof CandidateOnboardingData)[][] = [
-    ['domain', 'primaryRole', 'highestEducation', 'currentStatus'],
-    ['topSkills', 'yearsOfExperience', 'professionalBio'],
-    ['country', 'portfolioUrl', 'githubUrl', 'linkedinUrl'],
-  ];
+  const stepFields: (keyof CandidateOnboardingData)[][] = useMemo(
+    () => [
+      ['domain', 'primaryRole', 'highestEducation', 'currentStatus'],
+      ['topSkills', 'yearsOfExperience', 'professionalBio'],
+      ['country', 'portfolioUrl', 'githubUrl', 'linkedinUrl'],
+    ],
+    [],
+  );
 
   const nextStep = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -174,35 +198,58 @@ const CandidateOnboardingClient = () => {
     event.preventDefault();
   };
 
-  // Track whether we've initialized local state from the server-provided onboarding
-  // Use React state instead of refs so we don't read refs during render.
-  const [hasInitialized, setHasInitialized] = useState(false);
-
-  // Reset form with draft data when onboarding data is loaded — keep only the external side-effect here.
+  // HYDRATION: Reset form and sync step when data first arrives
   useEffect(() => {
-    if (
-      onboarding?.status === 'in_progress' &&
-      onboarding.onboardingType === 'candidate' &&
-      onboarding.draft
-    ) {
-      form.reset({
-        ...formDefaultValues,
-        ...onboarding.draft,
-      });
-    }
-  }, [onboarding, form, formDefaultValues]);
+    // Only run this ONCE when onboarding data is first available
+    if (hasInitialized || !onboarding) return;
 
-  // Initialize `step` during render (allowed) instead of inside the effect.
-  // Setting component state during render is intentional and guarded to run only once.
-  if (
-    !hasInitialized &&
-    onboarding?.status === 'in_progress' &&
-    onboarding.onboardingType === 'candidate' &&
-    typeof onboarding.currentStep === 'number'
-  ) {
-    setStep(onboarding.currentStep);
-    setHasInitialized(true);
-  }
+    // Defensive redirect guard: ensure we have a stable client state before redirecting
+    if (onboarding.status === 'completed') {
+      if (
+        isLoading ||
+        !session ||
+        onboarding.onboardingType !== 'candidate' ||
+        onboardingType !== 'candidate'
+      ) {
+        // still hydrating or role mismatch — wait for a stable state
+        return;
+      }
+      router.replace('/candidate/onboarding/success');
+      return;
+    }
+
+    if (onboarding.status === 'not_started') {
+      setTimeout(() => setHasInitialized(true), 0);
+      return;
+    }
+
+    if (onboarding.status === 'in_progress' && onboarding.onboardingType === 'candidate') {
+      // 1. Load the draft into the form
+      if (onboarding.draft) {
+        form.reset({
+          ...formDefaultValues,
+          ...onboarding.draft,
+        });
+      }
+
+      // 2. Set the current step
+      if (typeof onboarding.currentStep === 'number') {
+        setTimeout(() => setStep(onboarding.currentStep), 0);
+      }
+
+      // 3. Mark initialization as complete
+      setTimeout(() => setHasInitialized(true), 0);
+    }
+  }, [
+    onboarding,
+    form,
+    formDefaultValues,
+    router,
+    hasInitialized,
+    session,
+    isLoading,
+    onboardingType,
+  ]);
 
   return (
     <main role="main" className="relative z-1 mx-auto w-full max-w-7xl flex-col">
@@ -211,7 +258,9 @@ const CandidateOnboardingClient = () => {
         <div data-shadcn className="w-full max-w-2xl">
           <form
             id="candidate-onboarding"
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, (errors) => {
+              console.error('Onboarding validation errors:', errors);
+            })}
             onKeyDown={handleFormKeyDown}
             aria-labelledby="candidate-form-title"
           >
