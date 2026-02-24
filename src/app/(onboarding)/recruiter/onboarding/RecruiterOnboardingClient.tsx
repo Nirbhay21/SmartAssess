@@ -88,10 +88,10 @@ const RecruiterOnboardingClient = () => {
       organizationName: '',
       organizationSize: '',
       industry: '',
-      country: '',
+      countryCode: '',
       hiringDomains: [],
-      experienceLevelsHiring: [],
-      companyWebsite: '',
+      experienceLevels: [],
+      organizationWebsite: '',
       llmProvider: '',
       llmApiKey: '',
       defaultModel: '',
@@ -146,8 +146,8 @@ const RecruiterOnboardingClient = () => {
 
   const stepFields: (keyof RecruiterOnboardingData)[][] = useMemo(
     () => [
-      ['organizationName', 'organizationSize', 'industry', 'country'],
-      ['hiringDomains', 'experienceLevelsHiring', 'companyWebsite'],
+      ['organizationName', 'organizationSize', 'industry', 'countryCode'],
+      ['hiringDomains', 'experienceLevels', 'organizationWebsite'],
       ['llmProvider', 'llmApiKey', 'defaultModel'],
     ],
     [],

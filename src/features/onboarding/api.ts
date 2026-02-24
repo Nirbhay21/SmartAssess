@@ -61,7 +61,7 @@ export const onboardingApi = baseApi.injectEndpoints({
               dispatch(authApi.endpoints.getMe.initiate(undefined, { forceRefetch: true }));
             } catch {}
           }
-        } catch (e) {
+        } catch {
           // ignore
         }
       },
