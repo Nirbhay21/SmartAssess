@@ -9,13 +9,21 @@ import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { DOMAIN_INDUSTRIES, EXPERIENCE_LEVELS } from '@/constants/onboarding-form';
-import { RecruiterOnboardingData } from '@/lib/validation/onboarding/recruiter-onboarding.schema';
 
-const StepTwo = ({
+// generic form component that works with any object containing the expected
+// recruiter organization fields (names must match). By making the component
+// generic we avoid casting when the parent form uses a subset type.
+type OrgStepFields = {
+  hiringDomains?: string[];
+  experienceLevels?: string[];
+  organizationWebsite?: string;
+};
+
+const StepTwo = <T extends OrgStepFields>({
   form,
   isLoading = false,
 }: {
-  form: UseFormReturn<RecruiterOnboardingData>;
+  form: UseFormReturn<T>;
   isLoading?: boolean;
 }) => {
   const domainOptions: Option[] = useMemo(
@@ -29,7 +37,7 @@ const StepTwo = ({
   );
 
   const FIELDS: Array<{
-    name: FieldPath<RecruiterOnboardingData>;
+    name: FieldPath<T>;
     label: string;
     type: 'multiple' | 'input';
     placeholder?: string;
@@ -38,7 +46,7 @@ const StepTwo = ({
     optional?: boolean;
   }> = [
     {
-      name: 'hiringDomains',
+      name: 'hiringDomains' as FieldPath<T>,
       label: 'Hiring Domains',
       type: 'multiple',
       defaultOptions: domainOptions,
@@ -46,7 +54,8 @@ const StepTwo = ({
       creatable: false,
     },
     {
-      name: 'experienceLevelsHiring',
+      // experienceLevels is the shared key used by both onboarding and org schema
+      name: 'experienceLevels' as FieldPath<T>,
       label: 'Experience Levels',
       type: 'multiple',
       defaultOptions: experienceOptions,
@@ -54,7 +63,7 @@ const StepTwo = ({
       creatable: false,
     },
     {
-      name: 'companyWebsite',
+      name: 'organizationWebsite' as FieldPath<T>,
       label: 'Company Website',
       type: 'input',
       placeholder: 'https://example.com',
@@ -116,8 +125,8 @@ const StepTwo = ({
                       {...field}
                       id={String(f.name)}
                       placeholder={f.placeholder}
-                      type={String(f.name) === 'companyWebsite' ? 'url' : undefined}
-                      autoComplete={String(f.name) === 'companyWebsite' ? 'url' : undefined}
+                      type={String(f.name) === 'organizationWebsite' ? 'url' : undefined}
+                      autoComplete={String(f.name) === 'organizationWebsite' ? 'url' : undefined}
                       className="font-inter"
                     />
                   )}

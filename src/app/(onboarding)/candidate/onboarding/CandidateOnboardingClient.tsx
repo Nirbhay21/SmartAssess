@@ -93,7 +93,7 @@ const CandidateOnboardingClient = () => {
       topSkills: [],
       yearsOfExperience: '',
       professionalBio: '',
-      country: '',
+      countryCode: '',
       portfolioUrl: '',
       githubUrl: '',
       linkedinUrl: '',
@@ -151,7 +151,7 @@ const CandidateOnboardingClient = () => {
     () => [
       ['domain', 'primaryRole', 'highestEducation', 'currentStatus'],
       ['topSkills', 'yearsOfExperience', 'professionalBio'],
-      ['country', 'portfolioUrl', 'githubUrl', 'linkedinUrl'],
+      ['countryCode', 'portfolioUrl', 'githubUrl', 'linkedinUrl'],
     ],
     [],
   );

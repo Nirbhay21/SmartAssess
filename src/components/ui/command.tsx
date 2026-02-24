@@ -1,6 +1,6 @@
 'use client';
 
-import { Command as CommandPrimitive } from 'cmdk';
+import { Command as CommandPrimitive, useCommandState } from 'cmdk';
 import { SearchIcon } from 'lucide-react';
 import * as React from 'react';
 
@@ -41,14 +41,16 @@ function CommandDialog({
 }) {
   return (
     <Dialog {...props}>
-      <DialogHeader className="sr-only">
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
-      </DialogHeader>
       <DialogContent
         className={cn('overflow-hidden p-0', className)}
         showCloseButton={showCloseButton}
+        aria-describedby="command-dialog-desc"
       >
+        <DialogHeader className="sr-only">
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription id="command-dialog-desc">{description}</DialogDescription>
+        </DialogHeader>
+
         <Command className="**:[[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5 **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group]]:px-2 **:[[cmdk-input]]:h-12 **:[[cmdk-item]]:px-2 **:[[cmdk-item]]:py-3">
           {children}
         </Command>
@@ -87,6 +89,13 @@ function CommandList({ className, ...props }: React.ComponentProps<typeof Comman
 }
 
 function CommandEmpty({ ...props }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
+  // the default wrapper always renders the empty slot regardless of whether
+  // there are results. cmdk internally only shows it when
+  // `state.filtered.count === 0`, so replicate that guard here to avoid the
+  // misleading "No results" message when we supply our own filtering logic.
+  const render = useCommandState((state) => state.filtered.count === 0);
+  if (!render) return null;
+
   return (
     <CommandPrimitive.Empty
       data-slot="command-empty"

@@ -22,3 +22,15 @@ export function parseAppMetaCookie(): { r: UserType; oc: boolean } | null {
     return null;
   }
 }
+
+/**
+ * Take a full name string and return either the name unchanged (if 1-2 words)
+ * or the first and last word when more than two words are provided. Falls
+ * back to a default when no name is given.
+ */
+export function formatUserName(fullName?: string, fallback = 'Jane Doe') {
+  if (!fullName) return fallback;
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length <= 2) return parts.join(' ');
+  return `${parts[0]} ${parts[parts.length - 1]}`;
+}

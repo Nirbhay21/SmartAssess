@@ -6,7 +6,6 @@ import React, { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -34,6 +33,10 @@ export interface ComboboxProps {
   className?: string;
   buttonClassName?: string;
   renderItem?: (item: Item) => React.ReactNode;
+  /**
+   * custom renderer for the selected value shown in the trigger button
+   */
+  renderValue?: (item: Item) => React.ReactNode;
   emptyMessage?: string;
   disabled?: boolean;
   enableSearch?: boolean;
@@ -64,6 +67,7 @@ const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
       className,
       buttonClassName,
       renderItem,
+      renderValue,
       emptyMessage = 'No results found.',
       disabled = false,
       enableSearch = true,
@@ -87,10 +91,23 @@ const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
 
     const filtered = useMemo(() => {
       if (!enableSearch || !query) return normalized;
-      const q = query.toLowerCase();
-      return normalized.filter(
+      const q = query.trim().toLowerCase();
+      if (!q) return normalized;
+      // primarily match against the human-readable label, but also allow
+      // value matches as a fallback (e.g. user types a two‑letter code).
+      const matches = normalized.filter(
         (i) => i.label.toLowerCase().includes(q) || i.value.toLowerCase().includes(q),
       );
+
+      // push items whose label or value exactly equals the query to the
+      // front. this ensures fully-typed terms are ranked above partial or
+      // substring matches.
+      matches.sort((a, b) => {
+        const aExact = a.label.toLowerCase() === q || a.value.toLowerCase() === q ? 0 : 1;
+        const bExact = b.label.toLowerCase() === q || b.value.toLowerCase() === q ? 0 : 1;
+        return aExact - bExact;
+      });
+      return matches;
     }, [normalized, query, enableSearch]);
 
     function handleSelect(val: string) {
@@ -117,14 +134,19 @@ const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
             aria-label={ariaLabel}
           >
             {normalizedValue
-              ? (normalized.find((i) => i.value === normalizedValue)?.label ?? normalizedValue)
+              ? renderValue && normalized.find((i) => i.value === normalizedValue)
+                ? renderValue(normalized.find((i) => i.value === normalizedValue)!)
+                : (normalized.find((i) => i.value === normalizedValue)?.label ?? normalizedValue)
               : placeholder}
             <ChevronsUpDownIcon className="opacity-50" />
           </Button>
         </PopoverTrigger>
 
         <PopoverContent data-shadcn className="min-w-(--radix-popper-anchor-width) p-0">
-          <Command>
+          {/* disable cmdk's built‑in filtering by giving it a no‑op function. we
+              still render our own filtered array above, but cmdk expects a
+              function rather than a boolean and will crash if `filter` is false. */}
+          <Command filter={() => 1}>
             {enableSearch && (
               <CommandInput
                 ref={forwardedRef as React.Ref<HTMLInputElement>}
@@ -138,7 +160,9 @@ const Combobox = React.forwardRef<HTMLInputElement, ComboboxProps>(
               />
             )}
             <CommandList>
-              <CommandEmpty>{emptyMessage}</CommandEmpty>
+              {filtered.length === 0 ? (
+                <div className="py-6 text-center text-sm">{emptyMessage}</div>
+              ) : null}
               <CommandGroup>
                 {filtered.map((item) => (
                   <CommandItem

@@ -3,13 +3,9 @@ import { NextRequest } from 'next/server';
 import { backendFetch } from '@/lib/bff/backend-fetch';
 import { handleError } from '@/lib/bff/errors';
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
-    const body = await req.json();
-    return await backendFetch(req, '/onboarding/complete', {
-      method: 'POST',
-      body: JSON.stringify(body),
-    });
+    return await backendFetch(req, '/recruiter/profile');
   } catch (error) {
     return handleError(error);
   }
